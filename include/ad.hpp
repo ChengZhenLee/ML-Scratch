@@ -8,10 +8,10 @@ struct Tape {
     struct Node {
         std::vector<int> parents;
         std::vector<T> derivatives;
+        T adjoint = T(0);
     };
 
     std::vector<Node> nodes;
-    std::vector<T> adjoints;
 
     int push_leaf() {
         // Push a leaf with no parents 
@@ -29,23 +29,32 @@ struct Tape {
         return nodes.size() - 1;
     }
 
-    void backward(int outputIndex) {
-        this->adjoints.assign(this->nodes.size(), T(0));
+    void init_adjoints() {
+        for (auto& node : nodes) node.adjoint = T(0);
+    }
 
-        // Seed the (single) output
-        this->adjoints[outputIndex] = T(1);
+    void seed_adjoint(int idx, T value) {
+        nodes[idx].adjoint += value;
+    }
 
-        for (int i = this->nodes.size() - 1; i >= 0; i--) {
-            for (int j = 0; j < this->nodes[i].parents.size(); j++) {
-                int parent = this->nodes[i].parents[j];
-                this->adjoints[parent] += this->nodes[i].derivatives[j] * this->adjoints[i];
+    void propagate() {
+        for (int i = nodes.size() - 1; i >= 0; i--) {
+            auto& curNode = nodes[i];
+            auto& parents = curNode.parents;
+            for (size_t j = 0; j < parents.size(); j++) {
+                int p_idx = parents[j];
+                nodes[p_idx].adjoint += curNode.derivatives[j] * curNode.adjoint;
             }
         }
     }
 
+    T get_adjoint(int idx) {
+        if (idx < 0 || idx >= nodes.size()) return T(0);
+        return nodes[idx].adjoint;
+    }
+
     void reset() {
-        this->nodes.clear();
-        this->adjoints.clear();
+        nodes.clear();
     }
 };
 
@@ -63,28 +72,88 @@ struct Var {
 
 template <typename T>
 Var<T> operator+(const Var<T>&a, const Var<T>&b) {
-    double result_value = a.value + b.value;
+    T result_value = a.value + b.value;
     int result_idx = g_tape<T>.push_binary(a.idx, b.idx, 1.0, 1.0);
     return Var<T>(result_value, result_idx);
 }
 
 template <typename T>
 Var<T> operator-(const Var<T>& a, const Var<T>& b) {
-    double result_value = a.value - b.value;
+    T result_value = a.value - b.value;
     int result_idx = g_tape<T>.push_binary(a.idx, b.idx, 1.0, -1.0);
     return Var<T>(result_value, result_idx);
 }
 
 template <typename T>
 Var<T> operator*(const Var<T>& a, const Var<T>& b) {
-    double result_value = a.value * b.value;
+    T result_value = a.value * b.value;
     int result_idx = g_tape<T>.push_binary(a.idx, b.idx, b.value, a.value);
     return Var<T>(result_value, result_idx);
 }
 
 template <typename T>
 Var<T> operator/(const Var<T>& a, const Var<T>& b) {
-    double result_value = a.value / b.value;
+    T result_value = a.value / b.value;
     int result_idx = g_tape<T>.push_binary(a.idx, b.idx, 1.0 / b.value, -a.value / (b.value * b.value));
+    return Var<T>(result_value, result_idx);
+}
+
+template <typename T>
+Var<T> operator<(const Var<T>& a, const Var<T>& b) {
+    return a.value < b.value;
+}
+
+template <typename T>
+Var<T> operator<=(const Var<T>& a, const Var<T>& b) {
+    return a.value <= b.value;
+}
+
+template <typename T>
+Var<T> operator>(const Var<T>& a, const Var<T>& b) {
+    return a.value > b.value;
+}
+
+template <typename T>
+Var<T> operator>=(const Var<T>& a, const Var<T>& b) {
+    return a.value >= b.value;
+}
+
+template <typename T>
+Var<T> operator==(const Var<T>& a, const Var<T>& b) {
+    return a.value == b.value;
+}
+
+template <typename T>
+Var<T> exp(const Var<T>& x) {
+    T result_value = std::exp(x.value);
+    T result_idx = g_tape<T>.push_unary(x.idx, result_value);
+    return Var<T>(result_value, result_idx);
+}
+
+template <typename T>
+Var<T> sin(const Var<T>& x) {
+    T result_value = std::sin(x.value);
+    T result_idx = g_tape<T>.push_unary(x.idx, std::cos(x.value));
+    return Var<T>(result_value, result_idx);
+}
+
+template <typename T>
+Var<T> cos(const Var<T>& x) {
+    T result_value = std::cos(x.value);
+    T result_idx = g_tape<T>.push_unary(x.idx, -std::sin(x.value));
+    return Var<T>(result_value, result_idx);
+}
+
+template <typename T>
+Var<T> tan(const Var<T>& x) {
+    T result_value = std::tan(x.value);
+    T result_idx = g_tape<T>.push_unary(x.idx, 1 / (std::cos(x.value) * std::cos(x.value)));
+    return Var<T>(result_value, result_idx);
+}
+
+template <typename T>
+Var<T> log(const Var<T>& x) {
+    T result_value = std::log(x.value);
+    T result_idx = g_tape<T>.push_unary(x.idx, 1 / x.value);
     return Var<T>(result_value, result_idx);
 }
