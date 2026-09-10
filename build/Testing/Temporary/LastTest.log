@@ -1,0 +1,19 @@
+Start testing: Sep 10 13:48 Romance Daylight Time
+----------------------------------------------------------
+1/1 Testing: test_simple_ad
+1/1 Test: test_simple_ad
+Command: "C:/Users/zhens/OneDrive/Desktop/ML Scratch/build/tests/test_simple_ad.exe"
+Directory: C:/Users/zhens/OneDrive/Desktop/ML Scratch/build/tests
+"test_simple_ad" start time: Sep 10 13:48 Romance Daylight Time
+Output:
+----------------------------------------------------------
+test1 passed
+<end of output>
+Test time =   0.22 sec
+----------------------------------------------------------
+Test Passed.
+"test_simple_ad" end time: Sep 10 13:48 Romance Daylight Time
+"test_simple_ad" time elapsed: 00:00:00
+----------------------------------------------------------
+
+End testing: Sep 10 13:48 Romance Daylight Time

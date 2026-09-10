@@ -1,0 +1,11 @@
+# ninja log v7
+7	2088	8107440463411004	tests/CMakeFiles/test_simple_ad.dir/test_simple_ad.cpp.obj	437a2ef64dffed22
+2102	2946	8107440484351346	tests/test_simple_ad.exe	8137ca90068a8254
+29	1438	8107441260309342	tests/CMakeFiles/test_simple_ad.dir/test_simple_ad.cpp.obj	437a2ef64dffed22
+1441	1989	8107441274394226	tests/test_simple_ad.exe	8137ca90068a8254
+10	1175	8107442362119156	tests/CMakeFiles/test_simple_ad.dir/test_simple_ad.cpp.obj	437a2ef64dffed22
+1177	1595	8107442373780814	tests/test_simple_ad.exe	8137ca90068a8254
+14	1671	8107445876061365	tests/CMakeFiles/test_simple_ad.dir/test_simple_ad.cpp.obj	437a2ef64dffed22
+1672	2451	8107445892636152	tests/test_simple_ad.exe	8137ca90068a8254
+29	1059	8107446076537623	tests/CMakeFiles/test_simple_ad.dir/test_simple_ad.cpp.obj	437a2ef64dffed22
+1060	1507	8107446086821461	tests/test_simple_ad.exe	8137ca90068a8254
