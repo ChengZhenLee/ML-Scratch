@@ -1,21 +1,24 @@
 # ninja log v7
-7	2088	8107440463411004	tests/CMakeFiles/test_simple_ad.dir/test_simple_ad.cpp.obj	437a2ef64dffed22
-2102	2946	8107440484351346	tests/test_simple_ad.exe	8137ca90068a8254
-29	1438	8107441260309342	tests/CMakeFiles/test_simple_ad.dir/test_simple_ad.cpp.obj	437a2ef64dffed22
-1441	1989	8107441274394226	tests/test_simple_ad.exe	8137ca90068a8254
-10	1175	8107442362119156	tests/CMakeFiles/test_simple_ad.dir/test_simple_ad.cpp.obj	437a2ef64dffed22
-1177	1595	8107442373780814	tests/test_simple_ad.exe	8137ca90068a8254
-14	1671	8107445876061365	tests/CMakeFiles/test_simple_ad.dir/test_simple_ad.cpp.obj	437a2ef64dffed22
-1672	2451	8107445892636152	tests/test_simple_ad.exe	8137ca90068a8254
-29	1059	8107446076537623	tests/CMakeFiles/test_simple_ad.dir/test_simple_ad.cpp.obj	437a2ef64dffed22
-1060	1507	8107446086821461	tests/test_simple_ad.exe	8137ca90068a8254
-48	1749	8107461167926061	tests/CMakeFiles/test_simple_ad.dir/test_simple_ad.cpp.obj	437a2ef64dffed22
-1750	2383	8107461184943101	tests/test_simple_ad.exe	8137ca90068a8254
-13	1895	8107654408367384	tests/CMakeFiles/test_simple_ad.dir/test_simple_ad.cpp.obj	437a2ef64dffed22
-1897	2535	8107654427197074	tests/test_simple_ad.exe	8137ca90068a8254
-50	1038	8107655746802612	tests/CMakeFiles/test_simple_ad.dir/test_simple_ad.cpp.obj	437a2ef64dffed22
-1039	1441	8107655756716076	tests/test_simple_ad.exe	8137ca90068a8254
-46	4121	8107659623157047	tests/CMakeFiles/test_simple_ad.dir/test_simple_ad.cpp.obj	437a2ef64dffed22
-4123	5209	8107659663898738	tests/test_simple_ad.exe	8137ca90068a8254
-13	1187	8107661638259711	tests/CMakeFiles/test_simple_ad.dir/test_simple_ad.cpp.obj	437a2ef64dffed22
-1189	1671	8107661650029069	tests/test_simple_ad.exe	8137ca90068a8254
+53	2662	8108354067687785	tests/CMakeFiles/test_simple_ad.dir/test_simple_ad.cpp.obj	437a2ef64dffed22
+2664	3469	8108354093786243	tests/test_simple_ad.exe	8137ca90068a8254
+3	232	8108365003936870	build.ninja	36dc197443e41ca3
+3	232	8108365003936870	C:/Users/zhens/OneDrive/Desktop/ML Scratch/build/cmake_install.cmake	36dc197443e41ca3
+3	232	8108365003936870	C:/Users/zhens/OneDrive/Desktop/ML Scratch/build/tests/cmake_install.cmake	36dc197443e41ca3
+3	232	8108365003936870	C:/Users/zhens/OneDrive/Desktop/ML Scratch/build/CTestTestfile.cmake	36dc197443e41ca3
+3	232	8108365003936870	C:/Users/zhens/OneDrive/Desktop/ML Scratch/build/tests/CTestTestfile.cmake	36dc197443e41ca3
+7	1549	8108366150795955	tests/CMakeFiles/test_simple_ad.dir/test_simple_ad.cpp.obj	437a2ef64dffed22
+39	613	8108366347408325	tests/test_simple_ad.exe	8137ca90068a8254
+7	711	8108368082576810	tests/CMakeFiles/test_black_scholes.dir/test_black_scholes.cpp.obj	242c600f7448069c
+713	931	8108368089637215	tests/test_black_scholes.exe	7d9fd76472d151e5
+15	2134	8108368966387885	tests/CMakeFiles/test_black_scholes.dir/test_black_scholes.cpp.obj	242c600f7448069c
+2137	2784	8108368987609644	tests/test_black_scholes.exe	7d9fd76472d151e5
+24	2053	8108369718753518	tests/CMakeFiles/test_black_scholes.dir/test_black_scholes.cpp.obj	242c600f7448069c
+2055	2866	8108369739003431	tests/test_black_scholes.exe	7d9fd76472d151e5
+24	3645	8108379790922940	tests/CMakeFiles/test_black_scholes.dir/test_black_scholes.cpp.obj	242c600f7448069c
+67	2511	8108380215629753	tests/CMakeFiles/test_black_scholes.dir/test_black_scholes.cpp.obj	242c600f7448069c
+50	2365	8108380559072540	tests/CMakeFiles/test_black_scholes.dir/test_black_scholes.cpp.obj	242c600f7448069c
+2366	3161	8108380582243204	tests/test_black_scholes.exe	7d9fd76472d151e5
+14	2166	8108384088601441	tests/CMakeFiles/test_black_scholes.dir/test_black_scholes.cpp.obj	242c600f7448069c
+2168	2956	8108384110154003	tests/test_black_scholes.exe	7d9fd76472d151e5
+14	2069	8108385193551370	tests/CMakeFiles/test_black_scholes.dir/test_black_scholes.cpp.obj	242c600f7448069c
+2072	2888	8108385214128566	tests/test_black_scholes.exe	7d9fd76472d151e5

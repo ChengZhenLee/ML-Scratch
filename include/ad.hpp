@@ -1,5 +1,7 @@
 #pragma once
 
+#define _USE_MATH_DEFINES
+#include <cmath>
 #include <vector>
 
 
@@ -73,14 +75,47 @@ struct Var {
 template <typename T>
 Var<T> operator+(const Var<T>&a, const Var<T>&b) {
     T result_value = a.value + b.value;
-    int result_idx = g_tape<T>.push_binary(a.idx, b.idx, 1.0, 1.0);
+    int result_idx = g_tape<T>.push_binary(a.idx, b.idx, T(1), T(1));
     return Var<T>(result_value, result_idx);
+}
+
+template <typename T>
+Var<T> operator+(const Var<T>&a, const T&b) {
+    T result_value = a.value + b;
+    int result_idx = g_tape<T>.push_unary(a.idx, T(1));
+    return Var<T>(result_value, result_idx);
+}
+
+template <typename T>
+Var<T> operator+(const T& a, const Var<T>& b) {
+    return b + a;
 }
 
 template <typename T>
 Var<T> operator-(const Var<T>& a, const Var<T>& b) {
     T result_value = a.value - b.value;
-    int result_idx = g_tape<T>.push_binary(a.idx, b.idx, 1.0, -1.0);
+    int result_idx = g_tape<T>.push_binary(a.idx, b.idx, T(1), -T(1));
+    return Var<T>(result_value, result_idx);
+}
+
+template <typename T>
+Var<T> operator-(const Var<T>& a, const T& b) {
+    T result_value = a.value - b;
+    int result_idx = g_tape<T>.push_unary(a.idx, T(1));
+    return Var<T>(result_value, result_idx);
+}
+
+template <typename T>
+Var<T> operator-(const T& a, const Var<T>& b) {
+    T result_value = a - b.value;
+    int result_idx = g_tape<T>.push_unary(b.idx, -T(1));
+    return Var<T>(result_value, result_idx);
+}
+
+template<typename T>
+Var<T> operator-(const Var<T>& x) {
+    T result_value = -x.value;
+    int result_idx = g_tape<T>.push_unary(x.idx, T(-1));
     return Var<T>(result_value, result_idx);
 }
 
@@ -92,35 +127,112 @@ Var<T> operator*(const Var<T>& a, const Var<T>& b) {
 }
 
 template <typename T>
+Var<T> operator*(const Var<T>& a, const T& b) {
+    T result_value = a.value * b;
+    int result_idx = g_tape<T>.push_unary(a.idx, b);
+    return Var<T>(result_value, result_idx);
+}
+
+template <typename T>
+Var<T> operator*(const T& a, const Var<T>& b) {
+    return b * a;
+}
+
+template <typename T>
 Var<T> operator/(const Var<T>& a, const Var<T>& b) {
     T result_value = a.value / b.value;
     int result_idx = g_tape<T>.push_binary(a.idx, b.idx, 1.0 / b.value, -a.value / (b.value * b.value));
     return Var<T>(result_value, result_idx);
 }
 
+template<typename T>
+Var<T> operator/(const Var<T>& a, const T& b) {
+    T result_value = a.value / b;
+    int result_idx = g_tape<T>.push_unary(a.idx, T(1)/b);
+    return Var<T>(result_value, result_idx);
+}
+
+template<typename T>
+Var<T> operator/(const T& a, const Var<T>& b) {
+    T result_value = a / b.value;
+    T local_partial = -a / (b.value * b.value);   // d/db [a/b] = -a/b^2
+    int result_idx = g_tape<T>.push_unary(b.idx, local_partial);
+    return Var<T>(result_value, result_idx);
+}
+
 template <typename T>
-Var<T> operator<(const Var<T>& a, const Var<T>& b) {
+bool operator<(const Var<T>& a, const Var<T>& b) {
     return a.value < b.value;
 }
 
 template <typename T>
-Var<T> operator<=(const Var<T>& a, const Var<T>& b) {
+bool operator<(const Var<T>& a, const T& b) {
+    return a.value < b;
+}
+
+template <typename T>
+bool operator<=(const Var<T>& a, const Var<T>& b) {
     return a.value <= b.value;
 }
 
 template <typename T>
-Var<T> operator>(const Var<T>& a, const Var<T>& b) {
+bool operator<=(const Var<T>& a, const T& b) {
+    return a.value <= b;
+}
+
+template <typename T>
+bool operator>(const Var<T>& a, const Var<T>& b) {
     return a.value > b.value;
 }
 
 template <typename T>
-Var<T> operator>=(const Var<T>& a, const Var<T>& b) {
+bool operator>(const Var<T>& a, const T& b) {
+    return a.value > b;
+}
+
+template <typename T>
+bool operator>=(const Var<T>& a, const Var<T>& b) {
     return a.value >= b.value;
 }
 
 template <typename T>
-Var<T> operator==(const Var<T>& a, const Var<T>& b) {
+bool operator>=(const Var<T>& a, const T& b) {
+    return a.value >= b;
+}
+
+template <typename T>
+bool operator<(const T&a, const Var<T>& b) {
+    return b > a;
+}
+
+template <typename T>
+bool operator<=(const T&a, const Var<T>& b) {
+    return b >= a;
+}
+
+template <typename T>
+bool operator>(const T&a, const Var<T>& b) {
+    return b < a;
+}
+
+template <typename T>
+bool operator>=(const T&a, const Var<T>& b) {
+    return b <= a;
+}
+
+template <typename T>
+bool operator==(const Var<T>& a, const Var<T>& b) {
     return a.value == b.value;
+}
+
+template <typename T>
+bool operator==(const Var<T>& a, const T& b) {
+    return a.value == b;
+}
+
+template <typename T>
+bool operator==(const T& a, const Var<T>& b) {
+    return b == a;
 }
 
 template <typename T>
@@ -155,5 +267,29 @@ template <typename T>
 Var<T> log(const Var<T>& x) {
     T result_value = std::log(x.value);
     T result_idx = g_tape<T>.push_unary(x.idx, 1 / x.value);
+    return Var<T>(result_value, result_idx);
+}
+
+template <typename T>
+Var<T> pow(const Var<T>& x, int n) {
+    T result_value = std::pow(x.value, n);
+    T local_partial = T(n) * std::pow(x.value, n - 1);
+    int result_idx = g_tape<T>.push_unary(x.idx, local_partial);
+    return Var<T>(result_value, result_idx);
+}
+
+template <typename T>
+Var<T> sqrt(const Var<T>& x) {
+    T result_value = std::sqrt(x.value);
+    T local_partial = T(1) / (T(2) * result_value);
+    int result_idx = g_tape<T>.push_unary(x.idx, local_partial);
+    return Var<T>(result_value, result_idx);
+}
+
+template <typename T>
+Var<T> erf(const Var<T>& x) {
+    T result_value = std::erf(x.value);
+    T local_partial = (T(2) / std::sqrt(T(M_PI))) * std::exp(-x.value * x.value);
+    T result_idx = g_tape<T>.push_unary(x.idx, local_partial);
     return Var<T>(result_value, result_idx);
 }

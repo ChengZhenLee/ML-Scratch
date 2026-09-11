@@ -4,6 +4,7 @@
 #include <limits>
 
 #include "ad.hpp"
+#include "cfd.hpp"
 
 
 auto close = [](double a, double b, 
@@ -74,36 +75,74 @@ void test5_diamond_graph() {
     std::cout << "test5 passed\n";
 }
 
+// A dummy function
+template <typename T>
+T f(std::vector<T>& v) {
+    T x = v[0];
+    T y = v[1];
+    return x * y + x / y;
+}
+
 void test6_finite_difference_crosscheck() {
-    auto f = [](double x, double y) {
-        tape.reset();
-        Var vx(x), vy(y);
-        Var out = vx * vy + vx / vy;
-        return std::make_tuple(out, vx, vy);
-    };
+    double x = 1.7, y = 0.9;
+    Var vx = Var(x), vy = Var(y);
+    std::vector<Var<double>> vInputs = {vx, vy};
 
-    double x = 1.7, y = 0.9, h = 1e-6;
-
-    auto [out0, vx0, vy0] = f(x, y);
+    auto out = f(vInputs);
     tape.init_adjoints();
-    tape.seed_adjoint(out0.idx, 1.0);
+    tape.seed_adjoint(out.idx, 1.0);
     tape.propagate();
-    double ad_dx = tape.get_adjoint(vx0.idx);
-    double ad_dy = tape.get_adjoint(vy0.idx);
+    double ad_dx = tape.get_adjoint(vx.idx);
+    double ad_dy = tape.get_adjoint(vy.idx);
 
-    auto [out_xp, dummy1, dummy2] = f(x + h, y);
-    auto [out_xm, dummy3, dummy4] = f(x - h, y);
-    double fd_dx = (out_xp.value - out_xm.value) / (2 * h);
-
-    auto [out_yp, dummy5, dummy6] = f(x, y + h);
-    auto [out_ym, dummy7, dummy8] = f(x, y - h);
-    double fd_dy = (out_yp.value - out_ym.value) / (2 * h);
+    std::vector<double> cfdInputs = {x, y};
+    std::vector<double> gradients = cfd_gradient(f<double>, cfdInputs);
+    double fd_dx = gradients[0];
+    double fd_dy = gradients[1];
 
     assert(close(ad_dx, fd_dx, 1e-6));
     assert(close(ad_dy, fd_dy, 1e-6));
     std::cout << "test6 passed (AD vs finite difference)\n";
 }
 
+void test7_mixed_var_constant() {
+    tape.reset();
+    Var<double> x(3.0);
+    Var<double> y = x * 2.0 + 1.0;      // y = 2x + 1, dy/dx = 2
+    tape.init_adjoints();
+    tape.seed_adjoint(y.idx, 1.0);
+    tape.propagate();
+    assert(close(tape.get_adjoint(x.idx), 2.0));
+    assert(close(y.value, 7.0));
+
+    tape.reset();
+    Var<double> a(4.0);
+    Var<double> b = 10.0 / a;           // b = 10/a, db/da = -10/a^2 = -0.625
+    tape.init_adjoints();
+    tape.seed_adjoint(b.idx, 1.0);
+    tape.propagate();
+    assert(close(tape.get_adjoint(a.idx), -10.0/(4.0*4.0)));
+    std::cout << "test7 passed\n";
+}
+
+void test8_comparisons_dont_touch_tape() {
+    tape.reset();
+
+    Var<double> x(3.0), y(5.0);
+    size_t nodes_before = tape.nodes.size();
+
+    bool r1 = x < y;
+    bool r2 = y > x;
+    bool r3 = x < 10.0;
+
+    assert(r1 == true);
+    assert(r2 == true);
+    assert(r3 == true);
+
+    size_t nodes_after = tape.nodes.size();
+    assert(nodes_before == nodes_after);
+    std::cout << "test8 passed\n";
+}
 
 int main(void) {
     test1_single_multiply();
@@ -112,5 +151,7 @@ int main(void) {
     test4_division();
     test5_diamond_graph();
     test6_finite_difference_crosscheck();
+    test7_mixed_var_constant();
+    test8_comparisons_dont_touch_tape();
     std::cout << "all tests passed\n";
 }

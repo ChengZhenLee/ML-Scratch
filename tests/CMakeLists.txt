@@ -1,4 +1,8 @@
-add_executable(test_simple_ad test_simple_ad.cpp)
-target_link_libraries(test_simple_ad PRIVATE MLlib)
+function(add_ml_test name)
+    add_executable(${name} ${name}.cpp)
+    target_link_libraries(${name} PRIVATE MLlib)
+    add_test(NAME ${name} COMMAND ${name})
+endfunction()
 
-add_test(NAME test_simple_ad COMMAND test_simple_ad)
+add_ml_test(test_simple_ad)
+add_ml_test(test_black_scholes)
