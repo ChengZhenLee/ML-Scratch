@@ -83,12 +83,7 @@ T vanna(T S, T K, T r, T sigma, T tau) {
 }
 
 template <typename T>
-T charm_call(T S, T K, T r, T sigma, T tau) {
+T charm(T S, T K, T r, T sigma, T tau) {
     T d1 = dp(S, K, r, sigma, tau);
-    return norm_pdf(d1) * ((r + sigma*sigma/T(2)) / (sigma*sqrt(tau)) - d1/(T(2)*tau));
-}
-
-template <typename T>
-T charm_put(T S, T K, T r, T sigma, T tau) {
-    return charm_call(S, K, r, sigma, tau) - r * exp(-r * tau);
+    return -norm_pdf(d1) * ((r + sigma*sigma/T(2)) / (sigma*sqrt(tau)) - d1/(T(2)*tau));
 }

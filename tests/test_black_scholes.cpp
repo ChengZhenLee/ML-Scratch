@@ -48,12 +48,12 @@ void test2_second_order_derivatives() {
 
     double adGamma = tape.get_adjoint(Sv.idx);
     double adVanna = tape.get_adjoint(sigmav.idx);
-    double adCharm = tape.get_adjoint(tauv.idx);
+    double adCharm = -tape.get_adjoint(tauv.idx);
 
     double S = 100.0, K = 100.0, r = 0.05, sigma = 0.2, tau = 1.0;
     double exactGamma = gamma(S, K, r, sigma, tau);
     double exactVanna = vanna(S, K, r, sigma, tau);
-    double exactCharm = charm_call(S, K, r, sigma, tau);
+    double exactCharm = charm(S, K, r, sigma, tau);
 
     assert(std::fabs(adGamma - exactGamma) < tolerance && "Gamma is inaccurate");
     assert(std::fabs(adVanna - exactVanna) < tolerance && "Vanna is inaccurate");
