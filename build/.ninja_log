@@ -1,70 +1,32 @@
 # ninja log v7
 7	1549	8108366150795955	tests/CMakeFiles/test_simple_ad.dir/test_simple_ad.cpp.obj	437a2ef64dffed22
 39	613	8108366347408325	tests/test_simple_ad.exe	8137ca90068a8254
-15	365	8110231889570875	build.ninja	36dc197443e41ca3
-15	365	8110231889259384	C:/Users/zhens/OneDrive/Desktop/ML Scratch/build/cmake_install.cmake	36dc197443e41ca3
-15	365	8110231889570875	C:/Users/zhens/OneDrive/Desktop/ML Scratch/build/tests/cmake_install.cmake	36dc197443e41ca3
-15	365	8110231889259384	C:/Users/zhens/OneDrive/Desktop/ML Scratch/build/CTestTestfile.cmake	36dc197443e41ca3
-15	365	8110231889570875	C:/Users/zhens/OneDrive/Desktop/ML Scratch/build/tests/CTestTestfile.cmake	36dc197443e41ca3
-21	1152	8110222472536616	tests/CMakeFiles/test_black_scholes.dir/test_black_scholes.cpp.obj	242c600f7448069c
-1154	1769	8110222483704989	tests/test_black_scholes.exe	7d9fd76472d151e5
-9	1239	8110222472411870	tests/CMakeFiles/test_adjoint.dir/test_adjoint.cpp.obj	a8c049c935daf4d6
-1242	1794	8110222484657462	tests/test_adjoint.exe	8748f36abee8f993
-26	963	8110231423623521	tests/CMakeFiles/test_tangent.dir/test_tangent.cpp.obj	75303506739b1360
-964	1335	8110231432953266	tests/test_tangent.exe	accd6b096aeeb303
-4	332	8110231889570875	build.ninja	36dc197443e41ca3
-4	332	8110231889570875	C:/Users/zhens/OneDrive/Desktop/ML Scratch/build/cmake_install.cmake	36dc197443e41ca3
-4	332	8110231889570875	C:/Users/zhens/OneDrive/Desktop/ML Scratch/build/tests/cmake_install.cmake	36dc197443e41ca3
-4	332	8110231889570875	C:/Users/zhens/OneDrive/Desktop/ML Scratch/build/CTestTestfile.cmake	36dc197443e41ca3
-4	332	8110231889570875	C:/Users/zhens/OneDrive/Desktop/ML Scratch/build/tests/CTestTestfile.cmake	36dc197443e41ca3
-70	1144	8110231890760481	tests/CMakeFiles/test_nested.dir/test_nested.cpp.obj	271b20ca839f5eef
-1146	1520	8110231901536651	tests/test_nested.exe	d36690464702006a
-13	1838	8110871311787898	tests/CMakeFiles/test_nested.dir/test_nested.cpp.obj	271b20ca839f5eef
-1841	2715	8110871330072099	tests/test_nested.exe	d36690464702006a
-10	1349	8110892401175258	tests/CMakeFiles/test_nested.dir/test_nested.cpp.obj	271b20ca839f5eef
-1352	2205	8110892414606117	tests/test_nested.exe	d36690464702006a
-27	1285	8110892720111019	tests/CMakeFiles/test_nested.dir/test_nested.cpp.obj	271b20ca839f5eef
-1287	1657	8110892732704274	tests/test_nested.exe	d36690464702006a
-11	1192	8110892990357062	tests/CMakeFiles/test_nested.dir/test_nested.cpp.obj	271b20ca839f5eef
-1193	1632	8110893002175831	tests/test_nested.exe	d36690464702006a
-9	1370	8110894286375859	tests/CMakeFiles/test_nested.dir/test_nested.cpp.obj	271b20ca839f5eef
-1372	1765	8110894299984285	tests/test_nested.exe	d36690464702006a
-13	1274	8110895297946095	tests/CMakeFiles/test_nested.dir/test_nested.cpp.obj	271b20ca839f5eef
-1276	1725	8110895310535202	tests/test_nested.exe	d36690464702006a
-74	3489	8110898526726718	tests/CMakeFiles/test_nested.dir/test_nested.cpp.obj	271b20ca839f5eef
-3492	4761	8110898560916175	tests/test_nested.exe	d36690464702006a
-97	2652	8110899671778252	tests/CMakeFiles/test_nested.dir/test_nested.cpp.obj	271b20ca839f5eef
-2654	3335	8110899697366537	tests/test_nested.exe	d36690464702006a
-50	3923	8110902060573094	tests/CMakeFiles/test_nested.dir/test_nested.cpp.obj	271b20ca839f5eef
-3926	5152	8110902099344191	tests/test_nested.exe	d36690464702006a
-31	1503	8110902330042932	tests/CMakeFiles/test_nested.dir/test_nested.cpp.obj	271b20ca839f5eef
-1505	2096	8110902344741978	tests/test_nested.exe	d36690464702006a
-190	3328	8110947581381085	tests/CMakeFiles/test_nested.dir/test_nested.cpp.obj	271b20ca839f5eef
-43	1189	8110947742951105	tests/test_nested.exe	d36690464702006a
-27	2707	8110952121380692	tests/CMakeFiles/test_tangent.dir/test_tangent.cpp.obj	75303506739b1360
-10	2712	8110952121165161	tests/CMakeFiles/test_adjoint.dir/test_adjoint.cpp.obj	a8c049c935daf4d6
-34	2726	8110952121461677	tests/CMakeFiles/test_nested.dir/test_nested.cpp.obj	271b20ca839f5eef
-65	3133	8110952377684208	tests/CMakeFiles/test_tangent.dir/test_tangent.cpp.obj	75303506739b1360
-35	3189	8110952377365249	tests/CMakeFiles/test_adjoint.dir/test_adjoint.cpp.obj	a8c049c935daf4d6
-76	3604	8110952377753528	tests/CMakeFiles/test_nested.dir/test_nested.cpp.obj	271b20ca839f5eef
-51	3745	8110952377555089	tests/CMakeFiles/test_black_scholes.dir/test_black_scholes.cpp.obj	242c600f7448069c
-3136	5236	8110952408413467	tests/test_tangent.exe	accd6b096aeeb303
-3189	5268	8110952408936896	tests/test_adjoint.exe	8748f36abee8f993
-3604	5282	8110952413067733	tests/test_nested.exe	d36690464702006a
-3745	5286	8110952414493666	tests/test_black_scholes.exe	7d9fd76472d151e5
-36	3644	8110952629157669	tests/CMakeFiles/test_black_scholes.dir/test_black_scholes.cpp.obj	242c600f7448069c
-3645	4739	8110952665250367	tests/test_black_scholes.exe	7d9fd76472d151e5
-19	2500	8110955589278662	tests/CMakeFiles/test_black_scholes.dir/test_black_scholes.cpp.obj	242c600f7448069c
-2501	3390	8110955614100770	tests/test_black_scholes.exe	7d9fd76472d151e5
-13	1730	8110957075948312	tests/CMakeFiles/test_black_scholes.dir/test_black_scholes.cpp.obj	242c600f7448069c
-1732	2459	8110957093096603	tests/test_black_scholes.exe	7d9fd76472d151e5
-31	1587	8110957187600679	tests/CMakeFiles/test_black_scholes.dir/test_black_scholes.cpp.obj	242c600f7448069c
-1589	2192	8110957203189438	tests/test_black_scholes.exe	7d9fd76472d151e5
-13	1322	8110958192643601	tests/CMakeFiles/test_black_scholes.dir/test_black_scholes.cpp.obj	242c600f7448069c
-1325	1867	8110958205743803	tests/test_black_scholes.exe	7d9fd76472d151e5
-97	3039	8110959781722864	tests/CMakeFiles/test_tangent.dir/test_tangent.cpp.obj	75303506739b1360
-104	3060	8110959781741331	tests/CMakeFiles/test_nested.dir/test_nested.cpp.obj	271b20ca839f5eef
+4	332	8110995706651277	build.ninja	36dc197443e41ca3
+4	332	8110995706328559	C:/Users/zhens/OneDrive/Desktop/ML Scratch/build/cmake_install.cmake	36dc197443e41ca3
+4	332	8110995706501647	C:/Users/zhens/OneDrive/Desktop/ML Scratch/build/tests/cmake_install.cmake	36dc197443e41ca3
+4	332	8110995706328559	C:/Users/zhens/OneDrive/Desktop/ML Scratch/build/CTestTestfile.cmake	36dc197443e41ca3
+4	332	8110995706521347	C:/Users/zhens/OneDrive/Desktop/ML Scratch/build/tests/CTestTestfile.cmake	36dc197443e41ca3
 55	3077	8110959781235238	tests/CMakeFiles/test_black_scholes.dir/test_black_scholes.cpp.obj	242c600f7448069c
-3060	3715	8110959811354186	tests/test_nested.exe	d36690464702006a
-3040	3730	8110959811156098	tests/test_tangent.exe	accd6b096aeeb303
 3078	3739	8110959811533878	tests/test_black_scholes.exe	7d9fd76472d151e5
+35	3189	8110952377365249	tests/CMakeFiles/test_adjoint.dir/test_adjoint.cpp.obj	a8c049c935daf4d6
+3189	5268	8110952408936896	tests/test_adjoint.exe	8748f36abee8f993
+97	3039	8110959781722864	tests/CMakeFiles/test_tangent.dir/test_tangent.cpp.obj	75303506739b1360
+3040	3730	8110959811156098	tests/test_tangent.exe	accd6b096aeeb303
+104	3060	8110959781741331	tests/CMakeFiles/test_nested.dir/test_nested.cpp.obj	271b20ca839f5eef
+3060	3715	8110959811354186	tests/test_nested.exe	d36690464702006a
+21	1105	8110995706651277	build.ninja	36dc197443e41ca3
+21	1105	8110995706651277	C:/Users/zhens/OneDrive/Desktop/ML Scratch/build/cmake_install.cmake	36dc197443e41ca3
+21	1105	8110995706651277	C:/Users/zhens/OneDrive/Desktop/ML Scratch/build/tests/cmake_install.cmake	36dc197443e41ca3
+21	1105	8110995706651277	C:/Users/zhens/OneDrive/Desktop/ML Scratch/build/CTestTestfile.cmake	36dc197443e41ca3
+21	1105	8110995706651277	C:/Users/zhens/OneDrive/Desktop/ML Scratch/build/tests/CTestTestfile.cmake	36dc197443e41ca3
+116	2702	8110995708789687	tests/CMakeFiles/test_black_scholes.dir/test_black_scholes.cpp.obj	242c600f7448069c
+2704	3550	8110995734721789	tests/test_black_scholes.exe	7d9fd76472d151e5
+123	10388	8110995708789687	examples/CMakeFiles/markowitz.dir/markowitz.cpp.obj	e60174145c3480c9
+11	7456	8111000926350508	examples/CMakeFiles/markowitz.dir/markowitz.cpp.obj	e60174145c3480c9
+7459	8555	8111001000739947	examples/markowitz.exe	45afe5068d758a23
+11	6623	8111002009988286	examples/CMakeFiles/markowitz.dir/markowitz.cpp.obj	e60174145c3480c9
+6625	7380	8111002076153764	examples/markowitz.exe	45afe5068d758a23
+52	13871	8111007219765738	examples/CMakeFiles/markowitz.dir/markowitz.cpp.obj	e60174145c3480c9
+13875	15656	8111007358052716	examples/markowitz.exe	45afe5068d758a23
+51	6083	8111014585235236	examples/CMakeFiles/markowitz.dir/markowitz.cpp.obj	e60174145c3480c9
+6085	6944	8111014645681064	examples/markowitz.exe	45afe5068d758a23

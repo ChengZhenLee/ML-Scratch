@@ -8,3 +8,7 @@ C:/Users/zhens/OneDrive/Desktop/ML Scratch/build/tests/CMakeFiles/test_nested.di
 C:/Users/zhens/OneDrive/Desktop/ML Scratch/build/tests/CMakeFiles/test.dir
 C:/Users/zhens/OneDrive/Desktop/ML Scratch/build/tests/CMakeFiles/edit_cache.dir
 C:/Users/zhens/OneDrive/Desktop/ML Scratch/build/tests/CMakeFiles/rebuild_cache.dir
+C:/Users/zhens/OneDrive/Desktop/ML Scratch/build/examples/CMakeFiles/markowitz.dir
+C:/Users/zhens/OneDrive/Desktop/ML Scratch/build/examples/CMakeFiles/test.dir
+C:/Users/zhens/OneDrive/Desktop/ML Scratch/build/examples/CMakeFiles/edit_cache.dir
+C:/Users/zhens/OneDrive/Desktop/ML Scratch/build/examples/CMakeFiles/rebuild_cache.dir
