@@ -227,7 +227,7 @@ Tangent<T> pow(const Tangent<T>& x, int n) {
 template <typename T>
 Tangent<T> sqrt(const Tangent<T>& x) {
     T return_value = std::sqrt(x.value);
-    T tangent = x.tangent * 1 / std::sqrt(x.value);
+    T tangent = x.tangent / (T(2) * std::sqrt(x.value));
     return Tangent<T>(return_value, tangent);
 }
 

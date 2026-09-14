@@ -237,50 +237,50 @@ bool operator==(const T& a, const Adjoint<T>& b) {
 
 template <typename T>
 Adjoint<T> exp(const Adjoint<T>& x) {
-    T result_value = std::exp(x.value);
-    T result_idx = g_tape<T>.push_unary(x.idx, result_value);
+    T result_value = exp(x.value);
+    int result_idx = g_tape<T>.push_unary(x.idx, result_value);
     return Adjoint<T>(result_value, result_idx);
 }
 
 template <typename T>
 Adjoint<T> sin(const Adjoint<T>& x) {
-    T result_value = std::sin(x.value);
-    T result_idx = g_tape<T>.push_unary(x.idx, std::cos(x.value));
+    T result_value = sin(x.value);
+    int result_idx = g_tape<T>.push_unary(x.idx, cos(x.value));
     return Adjoint<T>(result_value, result_idx);
 }
 
 template <typename T>
 Adjoint<T> cos(const Adjoint<T>& x) {
-    T result_value = std::cos(x.value);
-    T result_idx = g_tape<T>.push_unary(x.idx, -std::sin(x.value));
+    T result_value = cos(x.value);
+    int result_idx = g_tape<T>.push_unary(x.idx, -sin(x.value));
     return Adjoint<T>(result_value, result_idx);
 }
 
 template <typename T>
 Adjoint<T> tan(const Adjoint<T>& x) {
-    T result_value = std::tan(x.value);
-    T result_idx = g_tape<T>.push_unary(x.idx, 1 / (std::cos(x.value) * std::cos(x.value)));
+    T result_value = tan(x.value);
+    int result_idx = g_tape<T>.push_unary(x.idx, T(1) / (cos(x.value) * cos(x.value)));
     return Adjoint<T>(result_value, result_idx);
 }
 
 template <typename T>
 Adjoint<T> log(const Adjoint<T>& x) {
-    T result_value = std::log(x.value);
-    T result_idx = g_tape<T>.push_unary(x.idx, 1 / x.value);
+    T result_value = log(x.value);
+    int result_idx = g_tape<T>.push_unary(x.idx, T(1) / x.value);
     return Adjoint<T>(result_value, result_idx);
 }
 
 template <typename T>
 Adjoint<T> pow(const Adjoint<T>& x, int n) {
-    T result_value = std::pow(x.value, n);
-    T local_partial = T(n) * std::pow(x.value, n - 1);
+    T result_value = pow(x.value, n);
+    T local_partial = T(n) * pow(x.value, n - 1);
     int result_idx = g_tape<T>.push_unary(x.idx, local_partial);
     return Adjoint<T>(result_value, result_idx);
 }
 
 template <typename T>
 Adjoint<T> sqrt(const Adjoint<T>& x) {
-    T result_value = std::sqrt(x.value);
+    T result_value = sqrt(x.value);
     T local_partial = T(1) / (T(2) * result_value);
     int result_idx = g_tape<T>.push_unary(x.idx, local_partial);
     return Adjoint<T>(result_value, result_idx);
@@ -288,8 +288,8 @@ Adjoint<T> sqrt(const Adjoint<T>& x) {
 
 template <typename T>
 Adjoint<T> erf(const Adjoint<T>& x) {
-    T result_value = std::erf(x.value);
-    T local_partial = (T(2) / std::sqrt(T(M_PI))) * std::exp(-x.value * x.value);
-    T result_idx = g_tape<T>.push_unary(x.idx, local_partial);
+    T result_value = erf(x.value);
+    T local_partial = (T(2) / sqrt(T(M_PI))) * exp(-x.value * x.value);
+    int result_idx = g_tape<T>.push_unary(x.idx, local_partial);
     return Adjoint<T>(result_value, result_idx);
 }
