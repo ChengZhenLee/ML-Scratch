@@ -3,7 +3,7 @@
 #include <iostream>
 #include <limits>
 
-#include "ad.hpp"
+#include "adjoint.hpp"
 #include "cfd.hpp"
 
 
@@ -16,8 +16,8 @@ auto& tape = g_tape<double>;
 
 void test1_single_multiply() {
     tape.reset();
-    Var a(2.0), b(3.0);
-    Var c = a * b;
+    Adjoint a(2.0), b(3.0);
+    Adjoint c = a * b;
     // tape.backward(c.idx);
     tape.init_adjoints();
     tape.seed_adjoint(c.idx, 1.0);
@@ -29,8 +29,8 @@ void test1_single_multiply() {
 
 void test2_reused_variable() {
     tape.reset();
-    Var a(2.0), b(3.0);
-    Var c = a * b + a;      // dc/da = b + 1, dc/db = a
+    Adjoint a(2.0), b(3.0);
+    Adjoint c = a * b + a;      // dc/da = b + 1, dc/db = a
     tape.init_adjoints();
     tape.seed_adjoint(c.idx, 1.0);
     tape.propagate();
@@ -41,8 +41,8 @@ void test2_reused_variable() {
 
 void test3_chain_of_ops() {
     tape.reset();
-    Var x(2.0);
-    Var y = x * x * x;   // y = x^3, dy/dx = 3x^2 = 12
+    Adjoint x(2.0);
+    Adjoint y = x * x * x;   // y = x^3, dy/dx = 3x^2 = 12
     tape.init_adjoints();
     tape.seed_adjoint(y.idx, 1.0);
     tape.propagate();
@@ -52,8 +52,8 @@ void test3_chain_of_ops() {
 
 void test4_division() {
     tape.reset();
-    Var a(6.0), b(2.0);
-    Var c = a / b;                 // c = 3
+    Adjoint a(6.0), b(2.0);
+    Adjoint c = a / b;                 // c = 3
     tape.init_adjoints();
     tape.seed_adjoint(c.idx, 1.0);
     tape.propagate();
@@ -64,10 +64,10 @@ void test4_division() {
 
 void test5_diamond_graph() {
     tape.reset();
-    Var a(2.0);
-    Var p = a * a;         // p = a^2
-    Var q = a + a;         // q = 2a
-    Var r = p * q;         // r = a^2 * 2a = 2a^3, dr/da = 6a^2 = 24
+    Adjoint a(2.0);
+    Adjoint p = a * a;         // p = a^2
+    Adjoint q = a + a;         // q = 2a
+    Adjoint r = p * q;         // r = a^2 * 2a = 2a^3, dr/da = 6a^2 = 24
     tape.init_adjoints();
     tape.seed_adjoint(r.idx, 1.0);
     tape.propagate();
@@ -85,8 +85,8 @@ T f(std::vector<T>& v) {
 
 void test6_finite_difference_crosscheck() {
     double x = 1.7, y = 0.9;
-    Var vx = Var(x), vy = Var(y);
-    std::vector<Var<double>> vInputs = {vx, vy};
+    Adjoint vx = Adjoint(x), vy = Adjoint(y);
+    std::vector<Adjoint<double>> vInputs = {vx, vy};
 
     auto out = f(vInputs);
     tape.init_adjoints();
@@ -107,8 +107,8 @@ void test6_finite_difference_crosscheck() {
 
 void test7_mixed_var_constant() {
     tape.reset();
-    Var<double> x(3.0);
-    Var<double> y = x * 2.0 + 1.0;      // y = 2x + 1, dy/dx = 2
+    Adjoint<double> x(3.0);
+    Adjoint<double> y = x * 2.0 + 1.0;      // y = 2x + 1, dy/dx = 2
     tape.init_adjoints();
     tape.seed_adjoint(y.idx, 1.0);
     tape.propagate();
@@ -116,8 +116,8 @@ void test7_mixed_var_constant() {
     assert(close(y.value, 7.0));
 
     tape.reset();
-    Var<double> a(4.0);
-    Var<double> b = 10.0 / a;           // b = 10/a, db/da = -10/a^2 = -0.625
+    Adjoint<double> a(4.0);
+    Adjoint<double> b = 10.0 / a;           // b = 10/a, db/da = -10/a^2 = -0.625
     tape.init_adjoints();
     tape.seed_adjoint(b.idx, 1.0);
     tape.propagate();
@@ -128,7 +128,7 @@ void test7_mixed_var_constant() {
 void test8_comparisons_dont_touch_tape() {
     tape.reset();
 
-    Var<double> x(3.0), y(5.0);
+    Adjoint<double> x(3.0), y(5.0);
     size_t nodes_before = tape.nodes.size();
 
     bool r1 = x < y;

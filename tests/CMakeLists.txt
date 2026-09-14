@@ -4,5 +4,7 @@ function(add_ml_test name)
     add_test(NAME ${name} COMMAND ${name})
 endfunction()
 
-add_ml_test(test_simple_ad)
+add_ml_test(test_adjoint)
 add_ml_test(test_black_scholes)
+add_ml_test(test_tangent)
+add_ml_test(test_nested)

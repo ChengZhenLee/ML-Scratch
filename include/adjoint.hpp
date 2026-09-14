@@ -36,7 +36,7 @@ struct Tape {
     }
 
     void seed_adjoint(int idx, T value) {
-        nodes[idx].adjoint += value;
+        nodes[idx].adjoint = nodes[idx].adjoint + value;
     }
 
     void propagate() {
@@ -45,7 +45,7 @@ struct Tape {
             auto& parents = curNode.parents;
             for (size_t j = 0; j < parents.size(); j++) {
                 int p_idx = parents[j];
-                nodes[p_idx].adjoint += curNode.derivatives[j] * curNode.adjoint;
+                nodes[p_idx].adjoint = nodes[p_idx].adjoint + curNode.derivatives[j] * curNode.adjoint;
             }
         }
     }
@@ -64,232 +64,232 @@ template <typename T>
 inline Tape<T> g_tape;
 
 template <typename T>
-struct Var {
+struct Adjoint {
     T value;
     int idx;
 
-    Var(T v) : value(v), idx(g_tape<T>.push_leaf()) {}
-    Var(T v, int i) : value(v), idx(i) {}
+    Adjoint(T v) : value(v), idx(g_tape<T>.push_leaf()) {}
+    Adjoint(T v, int i) : value(v), idx(i) {}
 };
 
 template <typename T>
-Var<T> operator+(const Var<T>&a, const Var<T>&b) {
+Adjoint<T> operator+(const Adjoint<T>&a, const Adjoint<T>&b) {
     T result_value = a.value + b.value;
     int result_idx = g_tape<T>.push_binary(a.idx, b.idx, T(1), T(1));
-    return Var<T>(result_value, result_idx);
+    return Adjoint<T>(result_value, result_idx);
 }
 
 template <typename T>
-Var<T> operator+(const Var<T>&a, const T&b) {
+Adjoint<T> operator+(const Adjoint<T>&a, const T&b) {
     T result_value = a.value + b;
     int result_idx = g_tape<T>.push_unary(a.idx, T(1));
-    return Var<T>(result_value, result_idx);
+    return Adjoint<T>(result_value, result_idx);
 }
 
 template <typename T>
-Var<T> operator+(const T& a, const Var<T>& b) {
+Adjoint<T> operator+(const T& a, const Adjoint<T>& b) {
     return b + a;
 }
 
 template <typename T>
-Var<T> operator-(const Var<T>& a, const Var<T>& b) {
+Adjoint<T> operator-(const Adjoint<T>& a, const Adjoint<T>& b) {
     T result_value = a.value - b.value;
     int result_idx = g_tape<T>.push_binary(a.idx, b.idx, T(1), -T(1));
-    return Var<T>(result_value, result_idx);
+    return Adjoint<T>(result_value, result_idx);
 }
 
 template <typename T>
-Var<T> operator-(const Var<T>& a, const T& b) {
+Adjoint<T> operator-(const Adjoint<T>& a, const T& b) {
     T result_value = a.value - b;
     int result_idx = g_tape<T>.push_unary(a.idx, T(1));
-    return Var<T>(result_value, result_idx);
+    return Adjoint<T>(result_value, result_idx);
 }
 
 template <typename T>
-Var<T> operator-(const T& a, const Var<T>& b) {
+Adjoint<T> operator-(const T& a, const Adjoint<T>& b) {
     T result_value = a - b.value;
     int result_idx = g_tape<T>.push_unary(b.idx, -T(1));
-    return Var<T>(result_value, result_idx);
+    return Adjoint<T>(result_value, result_idx);
 }
 
 template<typename T>
-Var<T> operator-(const Var<T>& x) {
+Adjoint<T> operator-(const Adjoint<T>& x) {
     T result_value = -x.value;
     int result_idx = g_tape<T>.push_unary(x.idx, T(-1));
-    return Var<T>(result_value, result_idx);
+    return Adjoint<T>(result_value, result_idx);
 }
 
 template <typename T>
-Var<T> operator*(const Var<T>& a, const Var<T>& b) {
+Adjoint<T> operator*(const Adjoint<T>& a, const Adjoint<T>& b) {
     T result_value = a.value * b.value;
     int result_idx = g_tape<T>.push_binary(a.idx, b.idx, b.value, a.value);
-    return Var<T>(result_value, result_idx);
+    return Adjoint<T>(result_value, result_idx);
 }
 
 template <typename T>
-Var<T> operator*(const Var<T>& a, const T& b) {
+Adjoint<T> operator*(const Adjoint<T>& a, const T& b) {
     T result_value = a.value * b;
     int result_idx = g_tape<T>.push_unary(a.idx, b);
-    return Var<T>(result_value, result_idx);
+    return Adjoint<T>(result_value, result_idx);
 }
 
 template <typename T>
-Var<T> operator*(const T& a, const Var<T>& b) {
+Adjoint<T> operator*(const T& a, const Adjoint<T>& b) {
     return b * a;
 }
 
 template <typename T>
-Var<T> operator/(const Var<T>& a, const Var<T>& b) {
+Adjoint<T> operator/(const Adjoint<T>& a, const Adjoint<T>& b) {
     T result_value = a.value / b.value;
     int result_idx = g_tape<T>.push_binary(a.idx, b.idx, 1.0 / b.value, -a.value / (b.value * b.value));
-    return Var<T>(result_value, result_idx);
+    return Adjoint<T>(result_value, result_idx);
 }
 
 template<typename T>
-Var<T> operator/(const Var<T>& a, const T& b) {
+Adjoint<T> operator/(const Adjoint<T>& a, const T& b) {
     T result_value = a.value / b;
     int result_idx = g_tape<T>.push_unary(a.idx, T(1)/b);
-    return Var<T>(result_value, result_idx);
+    return Adjoint<T>(result_value, result_idx);
 }
 
 template<typename T>
-Var<T> operator/(const T& a, const Var<T>& b) {
+Adjoint<T> operator/(const T& a, const Adjoint<T>& b) {
     T result_value = a / b.value;
     T local_partial = -a / (b.value * b.value);   // d/db [a/b] = -a/b^2
     int result_idx = g_tape<T>.push_unary(b.idx, local_partial);
-    return Var<T>(result_value, result_idx);
+    return Adjoint<T>(result_value, result_idx);
 }
 
 template <typename T>
-bool operator<(const Var<T>& a, const Var<T>& b) {
+bool operator<(const Adjoint<T>& a, const Adjoint<T>& b) {
     return a.value < b.value;
 }
 
 template <typename T>
-bool operator<(const Var<T>& a, const T& b) {
+bool operator<(const Adjoint<T>& a, const T& b) {
     return a.value < b;
 }
 
 template <typename T>
-bool operator<=(const Var<T>& a, const Var<T>& b) {
+bool operator<=(const Adjoint<T>& a, const Adjoint<T>& b) {
     return a.value <= b.value;
 }
 
 template <typename T>
-bool operator<=(const Var<T>& a, const T& b) {
+bool operator<=(const Adjoint<T>& a, const T& b) {
     return a.value <= b;
 }
 
 template <typename T>
-bool operator>(const Var<T>& a, const Var<T>& b) {
+bool operator>(const Adjoint<T>& a, const Adjoint<T>& b) {
     return a.value > b.value;
 }
 
 template <typename T>
-bool operator>(const Var<T>& a, const T& b) {
+bool operator>(const Adjoint<T>& a, const T& b) {
     return a.value > b;
 }
 
 template <typename T>
-bool operator>=(const Var<T>& a, const Var<T>& b) {
+bool operator>=(const Adjoint<T>& a, const Adjoint<T>& b) {
     return a.value >= b.value;
 }
 
 template <typename T>
-bool operator>=(const Var<T>& a, const T& b) {
+bool operator>=(const Adjoint<T>& a, const T& b) {
     return a.value >= b;
 }
 
 template <typename T>
-bool operator<(const T&a, const Var<T>& b) {
+bool operator<(const T&a, const Adjoint<T>& b) {
     return b > a;
 }
 
 template <typename T>
-bool operator<=(const T&a, const Var<T>& b) {
+bool operator<=(const T&a, const Adjoint<T>& b) {
     return b >= a;
 }
 
 template <typename T>
-bool operator>(const T&a, const Var<T>& b) {
+bool operator>(const T&a, const Adjoint<T>& b) {
     return b < a;
 }
 
 template <typename T>
-bool operator>=(const T&a, const Var<T>& b) {
+bool operator>=(const T&a, const Adjoint<T>& b) {
     return b <= a;
 }
 
 template <typename T>
-bool operator==(const Var<T>& a, const Var<T>& b) {
+bool operator==(const Adjoint<T>& a, const Adjoint<T>& b) {
     return a.value == b.value;
 }
 
 template <typename T>
-bool operator==(const Var<T>& a, const T& b) {
+bool operator==(const Adjoint<T>& a, const T& b) {
     return a.value == b;
 }
 
 template <typename T>
-bool operator==(const T& a, const Var<T>& b) {
+bool operator==(const T& a, const Adjoint<T>& b) {
     return b == a;
 }
 
 template <typename T>
-Var<T> exp(const Var<T>& x) {
+Adjoint<T> exp(const Adjoint<T>& x) {
     T result_value = std::exp(x.value);
     T result_idx = g_tape<T>.push_unary(x.idx, result_value);
-    return Var<T>(result_value, result_idx);
+    return Adjoint<T>(result_value, result_idx);
 }
 
 template <typename T>
-Var<T> sin(const Var<T>& x) {
+Adjoint<T> sin(const Adjoint<T>& x) {
     T result_value = std::sin(x.value);
     T result_idx = g_tape<T>.push_unary(x.idx, std::cos(x.value));
-    return Var<T>(result_value, result_idx);
+    return Adjoint<T>(result_value, result_idx);
 }
 
 template <typename T>
-Var<T> cos(const Var<T>& x) {
+Adjoint<T> cos(const Adjoint<T>& x) {
     T result_value = std::cos(x.value);
     T result_idx = g_tape<T>.push_unary(x.idx, -std::sin(x.value));
-    return Var<T>(result_value, result_idx);
+    return Adjoint<T>(result_value, result_idx);
 }
 
 template <typename T>
-Var<T> tan(const Var<T>& x) {
+Adjoint<T> tan(const Adjoint<T>& x) {
     T result_value = std::tan(x.value);
     T result_idx = g_tape<T>.push_unary(x.idx, 1 / (std::cos(x.value) * std::cos(x.value)));
-    return Var<T>(result_value, result_idx);
+    return Adjoint<T>(result_value, result_idx);
 }
 
 template <typename T>
-Var<T> log(const Var<T>& x) {
+Adjoint<T> log(const Adjoint<T>& x) {
     T result_value = std::log(x.value);
     T result_idx = g_tape<T>.push_unary(x.idx, 1 / x.value);
-    return Var<T>(result_value, result_idx);
+    return Adjoint<T>(result_value, result_idx);
 }
 
 template <typename T>
-Var<T> pow(const Var<T>& x, int n) {
+Adjoint<T> pow(const Adjoint<T>& x, int n) {
     T result_value = std::pow(x.value, n);
     T local_partial = T(n) * std::pow(x.value, n - 1);
     int result_idx = g_tape<T>.push_unary(x.idx, local_partial);
-    return Var<T>(result_value, result_idx);
+    return Adjoint<T>(result_value, result_idx);
 }
 
 template <typename T>
-Var<T> sqrt(const Var<T>& x) {
+Adjoint<T> sqrt(const Adjoint<T>& x) {
     T result_value = std::sqrt(x.value);
     T local_partial = T(1) / (T(2) * result_value);
     int result_idx = g_tape<T>.push_unary(x.idx, local_partial);
-    return Var<T>(result_value, result_idx);
+    return Adjoint<T>(result_value, result_idx);
 }
 
 template <typename T>
-Var<T> erf(const Var<T>& x) {
+Adjoint<T> erf(const Adjoint<T>& x) {
     T result_value = std::erf(x.value);
     T local_partial = (T(2) / std::sqrt(T(M_PI))) * std::exp(-x.value * x.value);
     T result_idx = g_tape<T>.push_unary(x.idx, local_partial);
-    return Var<T>(result_value, result_idx);
+    return Adjoint<T>(result_value, result_idx);
 }

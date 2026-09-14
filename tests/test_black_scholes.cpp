@@ -2,11 +2,11 @@
 #include <iostream>
 #include <limits>
 
-#include "ad.hpp"
+#include "adjoint.hpp"
 #include "black_scholes.hpp"
 
 
-using var = Var<double>;
+using var = Adjoint<double>;
 
 auto& tape = g_tape<double>;
 double tolerance = std::sqrt(std::numeric_limits<double>::epsilon());

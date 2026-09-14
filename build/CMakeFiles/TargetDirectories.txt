@@ -1,8 +1,10 @@
 C:/Users/zhens/OneDrive/Desktop/ML Scratch/build/CMakeFiles/test.dir
 C:/Users/zhens/OneDrive/Desktop/ML Scratch/build/CMakeFiles/edit_cache.dir
 C:/Users/zhens/OneDrive/Desktop/ML Scratch/build/CMakeFiles/rebuild_cache.dir
-C:/Users/zhens/OneDrive/Desktop/ML Scratch/build/tests/CMakeFiles/test_simple_ad.dir
+C:/Users/zhens/OneDrive/Desktop/ML Scratch/build/tests/CMakeFiles/test_adjoint.dir
 C:/Users/zhens/OneDrive/Desktop/ML Scratch/build/tests/CMakeFiles/test_black_scholes.dir
+C:/Users/zhens/OneDrive/Desktop/ML Scratch/build/tests/CMakeFiles/test_tangent.dir
+C:/Users/zhens/OneDrive/Desktop/ML Scratch/build/tests/CMakeFiles/test_nested.dir
 C:/Users/zhens/OneDrive/Desktop/ML Scratch/build/tests/CMakeFiles/test.dir
 C:/Users/zhens/OneDrive/Desktop/ML Scratch/build/tests/CMakeFiles/edit_cache.dir
 C:/Users/zhens/OneDrive/Desktop/ML Scratch/build/tests/CMakeFiles/rebuild_cache.dir
