@@ -7,9 +7,14 @@
 #include "Eigen/Dense"
 
 
-double stepSize = 0.0005;
+double stepSize = 1.0;
 int maxIter = 50000;
 double lambdaPenalty = 500.0;
+double c = 1e-4;
+
+std::vector<double> toVec(const Eigen::VectorXd& v) {
+    return std::vector<double>(v.data(), v.data() + v.size());
+}
 
 template <typename T>
 T penalized_objective(
@@ -94,7 +99,34 @@ int main(void) {
         for (int i = 0; i < 3; i++) {
             grad(i) = g_tape<double>.get_adjoint(w_a[i].idx);
         }
+
+        // If the step size satisfies the Armijo condition after it grows, grow it
+        while (true) {
+            double candidateStepSize = stepSize * 1.5;
+            Eigen::VectorXd wCandidate = w - candidateStepSize * grad;
+            double LHS = penalized_objective(toVec(wCandidate), Sigma, mu, rTarget);
+            double RHS = penalized_objective(toVec(w), Sigma, mu, rTarget) - c * candidateStepSize * grad.squaredNorm();
+
+            if (LHS <= RHS) {
+                stepSize = candidateStepSize;
+            } else {
+                break;
+            }
+        }
+
+        // Ensure Armijo condition is fulfilled
+        while (true) {
+            Eigen::VectorXd wCandidate = w - stepSize * grad;
+            double LHS = penalized_objective(toVec(wCandidate), Sigma, mu, rTarget);
+            double RHS = penalized_objective(toVec(w), Sigma, mu, rTarget) - c * stepSize * grad.squaredNorm();
+
+            if (LHS <= RHS) break;
+            stepSize /= 2.0;
+        }
         w = w - stepSize * grad;
+
+        // Print the step size at regular intervals
+        if (i % 5000 == 0) std::cout << "Step size at time " << i << ": " << stepSize << "\n";
     }
 
     double wSum = w.sum();
