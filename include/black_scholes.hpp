@@ -22,21 +22,21 @@ T dp(T S, T K, T r, T sigma, T tau) {
 }
 
 template <typename T>
-T dm(T S, T K, T r, T sigma, T tau) {
-    return dp(S, K, r, sigma, tau) - sigma * sqrt(tau);
+T dm(T dpResult, T sigma, T tau) {
+    return dpResult - sigma * sqrt(tau);
 }
 
 template <typename T>
 T black_scholes_call(T S, T K, T r, T sigma, T tau) {
     T dpResult = dp(S, K, r, sigma, tau);
-    T dmResult = dm(S, K, r, sigma, tau);
+    T dmResult = dm(dpResult, sigma, tau);
     return norm_cdf(dpResult) * S - norm_cdf(dmResult) * K * exp(-r * tau);
 }
 
 template <typename T>
 T black_scholes_put(T S, T K, T r, T sigma, T tau) {
     T dpResult = dp(S, K, r, sigma, tau);
-    T dmResult = dm(S, K, r, sigma, tau);
+    T dmResult = dm(dpResult, sigma, tau);
     return norm_cdf(-dmResult) * K * exp(-r * tau) - norm_cdf(-dpResult) * S;
 }
 
@@ -59,13 +59,14 @@ T vega(T S, T K, T r, T sigma, T tau) {
 template <typename T>
 T theta_call(T S, T K, T r, T sigma, T tau) {
     T d1 = dp(S, K, r, sigma, tau);
-    T d2 = dm(S, K, r, sigma, tau);
+    T d2 = dm(d1, sigma, tau);
     return -(S * norm_pdf(d1) * sigma) / (T(2) * sqrt(tau)) - r * K * exp(-r * tau) * norm_cdf(d2);
 }
 
 template <typename T>
 T rho_call(T S, T K, T r, T sigma, T tau) {
-    T d2 = dm(S, K, r, sigma, tau);
+    T d1 = dp(S, K, r, sigma, tau);
+    T d2 = dm(d1, sigma, tau);
     return K * tau * exp(- r * tau) * norm_cdf(d2);
 }
 
@@ -78,7 +79,7 @@ T gamma(T S, T K, T r, T sigma, T tau) {
 template <typename T>
 T vanna(T S, T K, T r, T sigma, T tau) {
     T d1 = dp(S, K, r, sigma, tau);
-    T d2 = dm(S, K, r, sigma, tau);
+    T d2 = dm(d1, sigma, tau);
     return -norm_pdf(d1) * d2 / sigma;
 }
 

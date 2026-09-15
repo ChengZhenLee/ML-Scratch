@@ -1,6 +1,6 @@
 test_simple_ad 2 0.10815
-test_adjoint 8 0.027257
-test_black_scholes 8 0.0199887
-test_tangent 4 0.0392462
-test_nested 1 0.189979
+test_adjoint 15 0.0191025
+test_black_scholes 15 0.0123087
+test_tangent 11 0.0231705
+test_nested 8 0.0291545
 ---

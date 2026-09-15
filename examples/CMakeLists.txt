@@ -5,3 +5,4 @@ endfunction()
 
 add_example(markowitz)
 add_example(markowitz_ad)
+add_example(black_scholes)

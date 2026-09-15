@@ -1,7 +1,6 @@
 #include <iostream>
 #include <cmath>
 #include <cassert>
-#include <limits>
 
 #include "adjoint.hpp"
 #include "Eigen/Dense"
@@ -85,6 +84,7 @@ int main(void) {
     Eigen::VectorXd grad(3);
     for (int i = 0; i < maxIter; i++) {
         g_tape<double>.reset();
+        
         std::vector<Adjoint<double>> w_a;
         for (int i = 0; i < 3; i++) {
             w_a.push_back(Adjoint<double>(w(i)));

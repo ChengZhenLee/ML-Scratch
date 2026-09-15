@@ -2,32 +2,47 @@
 
 #define _USE_MATH_DEFINES
 #include <cmath>
+#include <cstdint>
 #include <vector>
 
 
 template <typename T>
 struct Tape {
+    // Every node produced by this AD system has at most 2 parents
+    // (binary ops); fixed-size storage avoids a heap allocation per
+    // operation that std::vector members would incur.
     struct Node {
-        std::vector<int> parents;
-        std::vector<T> derivatives;
+        int parents[2] = {0, 0};
+        T derivatives[2] = {T(0), T(0)};
+        uint8_t numParents = 0;
         T adjoint = T(0);
     };
 
     std::vector<Node> nodes;
 
     int push_leaf() {
-        // Push a leaf with no parents 
-        nodes.push_back({{}, {}});
+        // Push a leaf with no parents
+        nodes.push_back(Node{});
         return nodes.size() - 1;
     }
 
     int push_binary(int p1, int p2, T d1, T d2) {
-        nodes.push_back({{p1, p2}, {d1, d2}});
+        Node node{};
+        node.parents[0] = p1;
+        node.parents[1] = p2;
+        node.derivatives[0] = d1;
+        node.derivatives[1] = d2;
+        node.numParents = 2;
+        nodes.push_back(node);
         return nodes.size() - 1;
     }
 
     int push_unary(int p, T d) {
-        nodes.push_back({{p}, {d}});
+        Node node{};
+        node.parents[0] = p;
+        node.derivatives[0] = d;
+        node.numParents = 1;
+        nodes.push_back(node);
         return nodes.size() - 1;
     }
 
@@ -42,9 +57,8 @@ struct Tape {
     void propagate() {
         for (int i = nodes.size() - 1; i >= 0; i--) {
             auto& curNode = nodes[i];
-            auto& parents = curNode.parents;
-            for (size_t j = 0; j < parents.size(); j++) {
-                int p_idx = parents[j];
+            for (uint8_t j = 0; j < curNode.numParents; j++) {
+                int p_idx = curNode.parents[j];
                 nodes[p_idx].adjoint = nodes[p_idx].adjoint + curNode.derivatives[j] * curNode.adjoint;
             }
         }

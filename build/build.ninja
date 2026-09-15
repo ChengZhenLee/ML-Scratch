@@ -12,7 +12,7 @@
 
 # =============================================================================
 # Project: ML
-# Configurations: 
+# Configurations: Release
 # =============================================================================
 
 #############################################
@@ -20,6 +20,11 @@
 
 ninja_required_version = 1.5
 
+
+#############################################
+# Set configuration variable for custom commands.
+
+CONFIGURATION = Release
 # =============================================================================
 # Include auxiliary files.
 
@@ -85,9 +90,10 @@ build rebuild_cache: phony CMakeFiles/rebuild_cache.util
 
 build cmake_object_order_depends_target_test_adjoint: phony || .
 
-build tests/CMakeFiles/test_adjoint.dir/test_adjoint.cpp.obj: CXX_COMPILER__test_adjoint_unscanned_ C$:/Users/zhens/OneDrive/Desktop/ML$ Scratch/tests/test_adjoint.cpp || cmake_object_order_depends_target_test_adjoint
+build tests/CMakeFiles/test_adjoint.dir/test_adjoint.cpp.obj: CXX_COMPILER__test_adjoint_unscanned_Release C$:/Users/zhens/OneDrive/Desktop/ML$ Scratch/tests/test_adjoint.cpp || cmake_object_order_depends_target_test_adjoint
+  CONFIG = Release
   DEP_FILE = tests\CMakeFiles\test_adjoint.dir\test_adjoint.cpp.obj.d
-  FLAGS = -std=gnu++20
+  FLAGS = -O3 -DNDEBUG -std=gnu++20
   INCLUDES = -I"C:/Users/zhens/OneDrive/Desktop/ML Scratch/include"
   OBJECT_DIR = tests\CMakeFiles\test_adjoint.dir
   OBJECT_FILE_DIR = tests\CMakeFiles\test_adjoint.dir
@@ -101,7 +107,9 @@ build tests/CMakeFiles/test_adjoint.dir/test_adjoint.cpp.obj: CXX_COMPILER__test
 #############################################
 # Link the executable tests\test_adjoint.exe
 
-build tests/test_adjoint.exe: CXX_EXECUTABLE_LINKER__test_adjoint_ tests/CMakeFiles/test_adjoint.dir/test_adjoint.cpp.obj
+build tests/test_adjoint.exe: CXX_EXECUTABLE_LINKER__test_adjoint_Release tests/CMakeFiles/test_adjoint.dir/test_adjoint.cpp.obj
+  CONFIG = Release
+  FLAGS = -O3 -DNDEBUG
   LINK_LIBRARIES = -lkernel32 -luser32 -lgdi32 -lwinspool -lshell32 -lole32 -loleaut32 -luuid -lcomdlg32 -ladvapi32
   OBJECT_DIR = tests\CMakeFiles\test_adjoint.dir
   POST_BUILD = cd .
@@ -120,9 +128,10 @@ build tests/test_adjoint.exe: CXX_EXECUTABLE_LINKER__test_adjoint_ tests/CMakeFi
 
 build cmake_object_order_depends_target_test_black_scholes: phony || .
 
-build tests/CMakeFiles/test_black_scholes.dir/test_black_scholes.cpp.obj: CXX_COMPILER__test_black_scholes_unscanned_ C$:/Users/zhens/OneDrive/Desktop/ML$ Scratch/tests/test_black_scholes.cpp || cmake_object_order_depends_target_test_black_scholes
+build tests/CMakeFiles/test_black_scholes.dir/test_black_scholes.cpp.obj: CXX_COMPILER__test_black_scholes_unscanned_Release C$:/Users/zhens/OneDrive/Desktop/ML$ Scratch/tests/test_black_scholes.cpp || cmake_object_order_depends_target_test_black_scholes
+  CONFIG = Release
   DEP_FILE = tests\CMakeFiles\test_black_scholes.dir\test_black_scholes.cpp.obj.d
-  FLAGS = -std=gnu++20
+  FLAGS = -O3 -DNDEBUG -std=gnu++20
   INCLUDES = -I"C:/Users/zhens/OneDrive/Desktop/ML Scratch/include"
   OBJECT_DIR = tests\CMakeFiles\test_black_scholes.dir
   OBJECT_FILE_DIR = tests\CMakeFiles\test_black_scholes.dir
@@ -136,7 +145,9 @@ build tests/CMakeFiles/test_black_scholes.dir/test_black_scholes.cpp.obj: CXX_CO
 #############################################
 # Link the executable tests\test_black_scholes.exe
 
-build tests/test_black_scholes.exe: CXX_EXECUTABLE_LINKER__test_black_scholes_ tests/CMakeFiles/test_black_scholes.dir/test_black_scholes.cpp.obj
+build tests/test_black_scholes.exe: CXX_EXECUTABLE_LINKER__test_black_scholes_Release tests/CMakeFiles/test_black_scholes.dir/test_black_scholes.cpp.obj
+  CONFIG = Release
+  FLAGS = -O3 -DNDEBUG
   LINK_LIBRARIES = -lkernel32 -luser32 -lgdi32 -lwinspool -lshell32 -lole32 -loleaut32 -luuid -lcomdlg32 -ladvapi32
   OBJECT_DIR = tests\CMakeFiles\test_black_scholes.dir
   POST_BUILD = cd .
@@ -155,9 +166,10 @@ build tests/test_black_scholes.exe: CXX_EXECUTABLE_LINKER__test_black_scholes_ t
 
 build cmake_object_order_depends_target_test_tangent: phony || .
 
-build tests/CMakeFiles/test_tangent.dir/test_tangent.cpp.obj: CXX_COMPILER__test_tangent_unscanned_ C$:/Users/zhens/OneDrive/Desktop/ML$ Scratch/tests/test_tangent.cpp || cmake_object_order_depends_target_test_tangent
+build tests/CMakeFiles/test_tangent.dir/test_tangent.cpp.obj: CXX_COMPILER__test_tangent_unscanned_Release C$:/Users/zhens/OneDrive/Desktop/ML$ Scratch/tests/test_tangent.cpp || cmake_object_order_depends_target_test_tangent
+  CONFIG = Release
   DEP_FILE = tests\CMakeFiles\test_tangent.dir\test_tangent.cpp.obj.d
-  FLAGS = -std=gnu++20
+  FLAGS = -O3 -DNDEBUG -std=gnu++20
   INCLUDES = -I"C:/Users/zhens/OneDrive/Desktop/ML Scratch/include"
   OBJECT_DIR = tests\CMakeFiles\test_tangent.dir
   OBJECT_FILE_DIR = tests\CMakeFiles\test_tangent.dir
@@ -171,7 +183,9 @@ build tests/CMakeFiles/test_tangent.dir/test_tangent.cpp.obj: CXX_COMPILER__test
 #############################################
 # Link the executable tests\test_tangent.exe
 
-build tests/test_tangent.exe: CXX_EXECUTABLE_LINKER__test_tangent_ tests/CMakeFiles/test_tangent.dir/test_tangent.cpp.obj
+build tests/test_tangent.exe: CXX_EXECUTABLE_LINKER__test_tangent_Release tests/CMakeFiles/test_tangent.dir/test_tangent.cpp.obj
+  CONFIG = Release
+  FLAGS = -O3 -DNDEBUG
   LINK_LIBRARIES = -lkernel32 -luser32 -lgdi32 -lwinspool -lshell32 -lole32 -loleaut32 -luuid -lcomdlg32 -ladvapi32
   OBJECT_DIR = tests\CMakeFiles\test_tangent.dir
   POST_BUILD = cd .
@@ -190,9 +204,10 @@ build tests/test_tangent.exe: CXX_EXECUTABLE_LINKER__test_tangent_ tests/CMakeFi
 
 build cmake_object_order_depends_target_test_nested: phony || .
 
-build tests/CMakeFiles/test_nested.dir/test_nested.cpp.obj: CXX_COMPILER__test_nested_unscanned_ C$:/Users/zhens/OneDrive/Desktop/ML$ Scratch/tests/test_nested.cpp || cmake_object_order_depends_target_test_nested
+build tests/CMakeFiles/test_nested.dir/test_nested.cpp.obj: CXX_COMPILER__test_nested_unscanned_Release C$:/Users/zhens/OneDrive/Desktop/ML$ Scratch/tests/test_nested.cpp || cmake_object_order_depends_target_test_nested
+  CONFIG = Release
   DEP_FILE = tests\CMakeFiles\test_nested.dir\test_nested.cpp.obj.d
-  FLAGS = -std=gnu++20
+  FLAGS = -O3 -DNDEBUG -std=gnu++20
   INCLUDES = -I"C:/Users/zhens/OneDrive/Desktop/ML Scratch/include"
   OBJECT_DIR = tests\CMakeFiles\test_nested.dir
   OBJECT_FILE_DIR = tests\CMakeFiles\test_nested.dir
@@ -206,7 +221,9 @@ build tests/CMakeFiles/test_nested.dir/test_nested.cpp.obj: CXX_COMPILER__test_n
 #############################################
 # Link the executable tests\test_nested.exe
 
-build tests/test_nested.exe: CXX_EXECUTABLE_LINKER__test_nested_ tests/CMakeFiles/test_nested.dir/test_nested.cpp.obj
+build tests/test_nested.exe: CXX_EXECUTABLE_LINKER__test_nested_Release tests/CMakeFiles/test_nested.dir/test_nested.cpp.obj
+  CONFIG = Release
+  FLAGS = -O3 -DNDEBUG
   LINK_LIBRARIES = -lkernel32 -luser32 -lgdi32 -lwinspool -lshell32 -lole32 -loleaut32 -luuid -lcomdlg32 -ladvapi32
   OBJECT_DIR = tests\CMakeFiles\test_nested.dir
   POST_BUILD = cd .
@@ -266,9 +283,10 @@ build tests/rebuild_cache: phony tests/CMakeFiles/rebuild_cache.util
 
 build cmake_object_order_depends_target_markowitz: phony || .
 
-build examples/CMakeFiles/markowitz.dir/markowitz.cpp.obj: CXX_COMPILER__markowitz_unscanned_ C$:/Users/zhens/OneDrive/Desktop/ML$ Scratch/examples/markowitz.cpp || cmake_object_order_depends_target_markowitz
+build examples/CMakeFiles/markowitz.dir/markowitz.cpp.obj: CXX_COMPILER__markowitz_unscanned_Release C$:/Users/zhens/OneDrive/Desktop/ML$ Scratch/examples/markowitz.cpp || cmake_object_order_depends_target_markowitz
+  CONFIG = Release
   DEP_FILE = examples\CMakeFiles\markowitz.dir\markowitz.cpp.obj.d
-  FLAGS = -std=gnu++20
+  FLAGS = -O3 -DNDEBUG -std=gnu++20
   INCLUDES = -I"C:/Users/zhens/OneDrive/Desktop/ML Scratch/include"
   OBJECT_DIR = examples\CMakeFiles\markowitz.dir
   OBJECT_FILE_DIR = examples\CMakeFiles\markowitz.dir
@@ -282,7 +300,9 @@ build examples/CMakeFiles/markowitz.dir/markowitz.cpp.obj: CXX_COMPILER__markowi
 #############################################
 # Link the executable examples\markowitz.exe
 
-build examples/markowitz.exe: CXX_EXECUTABLE_LINKER__markowitz_ examples/CMakeFiles/markowitz.dir/markowitz.cpp.obj
+build examples/markowitz.exe: CXX_EXECUTABLE_LINKER__markowitz_Release examples/CMakeFiles/markowitz.dir/markowitz.cpp.obj
+  CONFIG = Release
+  FLAGS = -O3 -DNDEBUG
   LINK_LIBRARIES = -lkernel32 -luser32 -lgdi32 -lwinspool -lshell32 -lole32 -loleaut32 -luuid -lcomdlg32 -ladvapi32
   OBJECT_DIR = examples\CMakeFiles\markowitz.dir
   POST_BUILD = cd .
@@ -301,9 +321,10 @@ build examples/markowitz.exe: CXX_EXECUTABLE_LINKER__markowitz_ examples/CMakeFi
 
 build cmake_object_order_depends_target_markowitz_ad: phony || .
 
-build examples/CMakeFiles/markowitz_ad.dir/markowitz_ad.cpp.obj: CXX_COMPILER__markowitz_ad_unscanned_ C$:/Users/zhens/OneDrive/Desktop/ML$ Scratch/examples/markowitz_ad.cpp || cmake_object_order_depends_target_markowitz_ad
+build examples/CMakeFiles/markowitz_ad.dir/markowitz_ad.cpp.obj: CXX_COMPILER__markowitz_ad_unscanned_Release C$:/Users/zhens/OneDrive/Desktop/ML$ Scratch/examples/markowitz_ad.cpp || cmake_object_order_depends_target_markowitz_ad
+  CONFIG = Release
   DEP_FILE = examples\CMakeFiles\markowitz_ad.dir\markowitz_ad.cpp.obj.d
-  FLAGS = -std=gnu++20
+  FLAGS = -O3 -DNDEBUG -std=gnu++20
   INCLUDES = -I"C:/Users/zhens/OneDrive/Desktop/ML Scratch/include"
   OBJECT_DIR = examples\CMakeFiles\markowitz_ad.dir
   OBJECT_FILE_DIR = examples\CMakeFiles\markowitz_ad.dir
@@ -317,7 +338,9 @@ build examples/CMakeFiles/markowitz_ad.dir/markowitz_ad.cpp.obj: CXX_COMPILER__m
 #############################################
 # Link the executable examples\markowitz_ad.exe
 
-build examples/markowitz_ad.exe: CXX_EXECUTABLE_LINKER__markowitz_ad_ examples/CMakeFiles/markowitz_ad.dir/markowitz_ad.cpp.obj
+build examples/markowitz_ad.exe: CXX_EXECUTABLE_LINKER__markowitz_ad_Release examples/CMakeFiles/markowitz_ad.dir/markowitz_ad.cpp.obj
+  CONFIG = Release
+  FLAGS = -O3 -DNDEBUG
   LINK_LIBRARIES = -lkernel32 -luser32 -lgdi32 -lwinspool -lshell32 -lole32 -loleaut32 -luuid -lcomdlg32 -ladvapi32
   OBJECT_DIR = examples\CMakeFiles\markowitz_ad.dir
   POST_BUILD = cd .
@@ -326,6 +349,44 @@ build examples/markowitz_ad.exe: CXX_EXECUTABLE_LINKER__markowitz_ad_ examples/C
   TARGET_IMPLIB = examples\libmarkowitz_ad.dll.a
   TARGET_PDB = markowitz_ad.exe.dbg
   TARGET_SUPPORT_DIR = examples\CMakeFiles\markowitz_ad.dir
+
+# =============================================================================
+# Object build statements for EXECUTABLE target black_scholes
+
+
+#############################################
+# Order-only phony target for black_scholes
+
+build cmake_object_order_depends_target_black_scholes: phony || .
+
+build examples/CMakeFiles/black_scholes.dir/black_scholes.cpp.obj: CXX_COMPILER__black_scholes_unscanned_Release C$:/Users/zhens/OneDrive/Desktop/ML$ Scratch/examples/black_scholes.cpp || cmake_object_order_depends_target_black_scholes
+  CONFIG = Release
+  DEP_FILE = examples\CMakeFiles\black_scholes.dir\black_scholes.cpp.obj.d
+  FLAGS = -O3 -DNDEBUG -std=gnu++20
+  INCLUDES = -I"C:/Users/zhens/OneDrive/Desktop/ML Scratch/include"
+  OBJECT_DIR = examples\CMakeFiles\black_scholes.dir
+  OBJECT_FILE_DIR = examples\CMakeFiles\black_scholes.dir
+  TARGET_SUPPORT_DIR = examples\CMakeFiles\black_scholes.dir
+
+
+# =============================================================================
+# Link build statements for EXECUTABLE target black_scholes
+
+
+#############################################
+# Link the executable examples\black_scholes.exe
+
+build examples/black_scholes.exe: CXX_EXECUTABLE_LINKER__black_scholes_Release examples/CMakeFiles/black_scholes.dir/black_scholes.cpp.obj
+  CONFIG = Release
+  FLAGS = -O3 -DNDEBUG
+  LINK_LIBRARIES = -lkernel32 -luser32 -lgdi32 -lwinspool -lshell32 -lole32 -loleaut32 -luuid -lcomdlg32 -ladvapi32
+  OBJECT_DIR = examples\CMakeFiles\black_scholes.dir
+  POST_BUILD = cd .
+  PRE_LINK = cd .
+  TARGET_FILE = examples\black_scholes.exe
+  TARGET_IMPLIB = examples\libblack_scholes.dll.a
+  TARGET_PDB = black_scholes.exe.dbg
+  TARGET_SUPPORT_DIR = examples\CMakeFiles\black_scholes.dir
 
 
 #############################################
@@ -366,6 +427,10 @@ build examples/rebuild_cache: phony examples/CMakeFiles/rebuild_cache.util
 # =============================================================================
 # Target aliases.
 
+build black_scholes: phony examples/black_scholes.exe
+
+build black_scholes.exe: phony examples/black_scholes.exe
+
 build markowitz: phony examples/markowitz.exe
 
 build markowitz.exe: phony examples/markowitz.exe
@@ -405,7 +470,7 @@ build all: phony tests/all examples/all
 #############################################
 # Folder: C:/Users/zhens/OneDrive/Desktop/ML Scratch/build/examples
 
-build examples/all: phony examples/markowitz.exe examples/markowitz_ad.exe
+build examples/all: phony examples/markowitz.exe examples/markowitz_ad.exe examples/black_scholes.exe
 
 # =============================================================================
 

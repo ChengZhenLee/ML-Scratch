@@ -1,51 +1,76 @@
 # ninja log v7
 7	1549	8108366150795955	tests/CMakeFiles/test_simple_ad.dir/test_simple_ad.cpp.obj	437a2ef64dffed22
 39	613	8108366347408325	tests/test_simple_ad.exe	8137ca90068a8254
-21	1105	8111775783488392	build.ninja	36dc197443e41ca3
-21	1105	8111775782772876	C:/Users/zhens/OneDrive/Desktop/ML Scratch/build/cmake_install.cmake	36dc197443e41ca3
-21	1105	8111775783052049	C:/Users/zhens/OneDrive/Desktop/ML Scratch/build/tests/cmake_install.cmake	36dc197443e41ca3
-21	1105	8111775782811933	C:/Users/zhens/OneDrive/Desktop/ML Scratch/build/CTestTestfile.cmake	36dc197443e41ca3
-21	1105	8111775783109335	C:/Users/zhens/OneDrive/Desktop/ML Scratch/build/tests/CTestTestfile.cmake	36dc197443e41ca3
-116	2702	8110995708789687	tests/CMakeFiles/test_black_scholes.dir/test_black_scholes.cpp.obj	242c600f7448069c
-2704	3550	8110995734721789	tests/test_black_scholes.exe	7d9fd76472d151e5
-35	3189	8110952377365249	tests/CMakeFiles/test_adjoint.dir/test_adjoint.cpp.obj	a8c049c935daf4d6
-3189	5268	8110952408936896	tests/test_adjoint.exe	8748f36abee8f993
-97	3039	8110959781722864	tests/CMakeFiles/test_tangent.dir/test_tangent.cpp.obj	75303506739b1360
-3040	3730	8110959811156098	tests/test_tangent.exe	accd6b096aeeb303
-104	3060	8110959781741331	tests/CMakeFiles/test_nested.dir/test_nested.cpp.obj	271b20ca839f5eef
-3060	3715	8110959811354186	tests/test_nested.exe	d36690464702006a
-51	6083	8111014585235236	examples/CMakeFiles/markowitz.dir/markowitz.cpp.obj	e60174145c3480c9
-6085	6944	8111014645681064	examples/markowitz.exe	45afe5068d758a23
-179	1170	8111775783488392	build.ninja	36dc197443e41ca3
-179	1170	8111775783488392	C:/Users/zhens/OneDrive/Desktop/ML Scratch/build/cmake_install.cmake	36dc197443e41ca3
-179	1170	8111775783488392	C:/Users/zhens/OneDrive/Desktop/ML Scratch/build/tests/cmake_install.cmake	36dc197443e41ca3
-179	1170	8111775783488392	C:/Users/zhens/OneDrive/Desktop/ML Scratch/build/examples/cmake_install.cmake	36dc197443e41ca3
-179	1170	8111775783488392	C:/Users/zhens/OneDrive/Desktop/ML Scratch/build/CTestTestfile.cmake	36dc197443e41ca3
-179	1170	8111775783488392	C:/Users/zhens/OneDrive/Desktop/ML Scratch/build/tests/CTestTestfile.cmake	36dc197443e41ca3
-179	1170	8111775783488392	C:/Users/zhens/OneDrive/Desktop/ML Scratch/build/examples/CTestTestfile.cmake	36dc197443e41ca3
-4	4370	8111784746953544	examples/CMakeFiles/markowitz_ad.dir/markowitz_ad.cpp.obj	c501a8704f47ecb6
-4376	5916	8111784790716211	examples/markowitz_ad.exe	8adf20fe55a2069e
-23	4616	8111790140240952	examples/CMakeFiles/markowitz_ad.dir/markowitz_ad.cpp.obj	c501a8704f47ecb6
-4618	5522	8111790186241344	examples/markowitz_ad.exe	8adf20fe55a2069e
-20	3013	8111792341025876	examples/CMakeFiles/markowitz_ad.dir/markowitz_ad.cpp.obj	c501a8704f47ecb6
-3015	3554	8111792370970989	examples/markowitz_ad.exe	8adf20fe55a2069e
-12	3109	8111793469875678	examples/CMakeFiles/markowitz_ad.dir/markowitz_ad.cpp.obj	c501a8704f47ecb6
-3111	3653	8111793500871247	examples/markowitz_ad.exe	8adf20fe55a2069e
-15	3040	8111794965260455	examples/CMakeFiles/markowitz_ad.dir/markowitz_ad.cpp.obj	c501a8704f47ecb6
-3041	3593	8111794995453012	examples/markowitz_ad.exe	8adf20fe55a2069e
-16	3562	8111795816438956	examples/CMakeFiles/markowitz_ad.dir/markowitz_ad.cpp.obj	c501a8704f47ecb6
-3565	4233	8111795851961016	examples/markowitz_ad.exe	8adf20fe55a2069e
-10	10731	8111812415987948	examples/CMakeFiles/markowitz_ad.dir/markowitz_ad.cpp.obj	c501a8704f47ecb6
-10736	12677	8111812523240828	examples/markowitz_ad.exe	8adf20fe55a2069e
-14	4737	8111813221810536	examples/CMakeFiles/markowitz_ad.dir/markowitz_ad.cpp.obj	c501a8704f47ecb6
-4740	5456	8111813269076296	examples/markowitz_ad.exe	8adf20fe55a2069e
-17	4369	8111814442548948	examples/CMakeFiles/markowitz_ad.dir/markowitz_ad.cpp.obj	c501a8704f47ecb6
-4372	5327	8111814486131467	examples/markowitz_ad.exe	8adf20fe55a2069e
-19	4506	8111815916168026	examples/CMakeFiles/markowitz_ad.dir/markowitz_ad.cpp.obj	c501a8704f47ecb6
-4509	5324	8111815961060564	examples/markowitz_ad.exe	8adf20fe55a2069e
-36	3777	8111816277573669	examples/CMakeFiles/markowitz_ad.dir/markowitz_ad.cpp.obj	c501a8704f47ecb6
-3780	4383	8111816315005592	examples/markowitz_ad.exe	8adf20fe55a2069e
-23	4570	8111821722571719	examples/CMakeFiles/markowitz_ad.dir/markowitz_ad.cpp.obj	c501a8704f47ecb6
-4573	5587	8111821768072684	examples/markowitz_ad.exe	8adf20fe55a2069e
-18	3382	8111824002556684	examples/CMakeFiles/markowitz_ad.dir/markowitz_ad.cpp.obj	c501a8704f47ecb6
-3384	3894	8111824036213242	examples/markowitz_ad.exe	8adf20fe55a2069e
+7	388	8112069813023280	build.ninja	36dc197443e41ca3
+7	388	8112069812677835	C:/Users/zhens/OneDrive/Desktop/ML Scratch/build/cmake_install.cmake	36dc197443e41ca3
+7	388	8112069812708203	C:/Users/zhens/OneDrive/Desktop/ML Scratch/build/tests/cmake_install.cmake	36dc197443e41ca3
+7	388	8112069812708203	C:/Users/zhens/OneDrive/Desktop/ML Scratch/build/CTestTestfile.cmake	36dc197443e41ca3
+7	388	8112069812864795	C:/Users/zhens/OneDrive/Desktop/ML Scratch/build/tests/CTestTestfile.cmake	36dc197443e41ca3
+49	3856	8112069536646363	tests/CMakeFiles/test_black_scholes.dir/test_black_scholes.cpp.obj	63608c91755f5516
+3856	4339	8112069574656636	tests/test_black_scholes.exe	58318556fa6c5c2f
+38	2926	8112069536496270	tests/CMakeFiles/test_adjoint.dir/test_adjoint.cpp.obj	b5cfc59947475af1
+2927	3572	8112069565492677	tests/test_adjoint.exe	13352f2c52666d56
+62	2045	8112069536840184	tests/CMakeFiles/test_tangent.dir/test_tangent.cpp.obj	fc19d9c6df6bb2d0
+2046	2896	8112069556684094	tests/test_tangent.exe	198ece3d0d44e14c
+72	2189	8112069536945714	tests/CMakeFiles/test_nested.dir/test_nested.cpp.obj	bea327f3f2abf90c
+2190	2974	8112069558122668	tests/test_nested.exe	80637965b146de0f
+82	11479	8112068508037658	examples/CMakeFiles/markowitz.dir/markowitz.cpp.obj	66d2535e494bdfd5
+64	1500	8112068872266103	examples/markowitz.exe	9f1229fb9fdaaaeb
+7	388	8112069813023280	C:/Users/zhens/OneDrive/Desktop/ML Scratch/build/examples/cmake_install.cmake	36dc197443e41ca3
+7	388	8112069813023280	C:/Users/zhens/OneDrive/Desktop/ML Scratch/build/examples/CTestTestfile.cmake	36dc197443e41ca3
+86	5843	8112069537080110	examples/CMakeFiles/markowitz_ad.dir/markowitz_ad.cpp.obj	384a3d0e1e2edaaa
+5843	6308	8112069594595198	examples/markowitz_ad.exe	b541c19fc14dd2c3
+43	1242	8112069735537941	examples/CMakeFiles/black_scholes.dir/black_scholes.cpp.obj	2b1a227fb1e8312d
+1243	1617	8112069747507176	examples/black_scholes.exe	b8d6f8a04a06a2c4
+51	1812	8112069816630603	examples/CMakeFiles/black_scholes.dir/black_scholes.cpp.obj	ece28582c7358606
+1813	2228	8112069834200513	examples/black_scholes.exe	910d1ba074096000
+15	2977	8112071749706591	examples/CMakeFiles/black_scholes.dir/black_scholes.cpp.obj	ece28582c7358606
+2978	3785	8112071779420687	examples/black_scholes.exe	910d1ba074096000
+45	3024	8112072156782066	examples/CMakeFiles/black_scholes.dir/black_scholes.cpp.obj	ece28582c7358606
+3025	3554	8112072186444158	examples/black_scholes.exe	910d1ba074096000
+12	2479	8112072572818802	examples/CMakeFiles/black_scholes.dir/black_scholes.cpp.obj	ece28582c7358606
+2480	2874	8112072597490252	examples/black_scholes.exe	910d1ba074096000
+172	7127	8112080298080676	examples/CMakeFiles/black_scholes.dir/black_scholes.cpp.obj	ece28582c7358606
+7129	8434	8112080367604830	examples/black_scholes.exe	910d1ba074096000
+11	2607	8112081111295465	examples/CMakeFiles/black_scholes.dir/black_scholes.cpp.obj	ece28582c7358606
+2609	3248	8112081137288080	examples/black_scholes.exe	910d1ba074096000
+10	2002	8112084322020206	examples/CMakeFiles/black_scholes.dir/black_scholes.cpp.obj	ece28582c7358606
+2004	2439	8112084341957782	examples/black_scholes.exe	910d1ba074096000
+32	1746	8112086211918872	tests/CMakeFiles/test_tangent.dir/test_tangent.cpp.obj	fc19d9c6df6bb2d0
+42	1924	8112086211918872	tests/CMakeFiles/test_nested.dir/test_nested.cpp.obj	bea327f3f2abf90c
+1748	2334	8112086229076200	tests/test_tangent.exe	198ece3d0d44e14c
+1925	2466	8112086230838814	tests/test_nested.exe	80637965b146de0f
+13	2551	8112086211661531	tests/CMakeFiles/test_adjoint.dir/test_adjoint.cpp.obj	b5cfc59947475af1
+63	3028	8112086212233804	examples/CMakeFiles/black_scholes.dir/black_scholes.cpp.obj	ece28582c7358606
+2553	3092	8112086237090707	tests/test_adjoint.exe	13352f2c52666d56
+22	3345	8112086211817796	tests/CMakeFiles/test_black_scholes.dir/test_black_scholes.cpp.obj	63608c91755f5516
+3029	3538	8112086241861354	examples/black_scholes.exe	910d1ba074096000
+3346	3859	8112086244996490	tests/test_black_scholes.exe	58318556fa6c5c2f
+53	6793	8112086212111021	examples/CMakeFiles/markowitz_ad.dir/markowitz_ad.cpp.obj	384a3d0e1e2edaaa
+6793	7223	8112086279480778	examples/markowitz_ad.exe	b541c19fc14dd2c3
+190	12474	8112095506279975	examples/CMakeFiles/black_scholes.dir/black_scholes.cpp.obj	ece28582c7358606
+12477	14435	8112095629160763	examples/black_scholes.exe	910d1ba074096000
+124	9269	8112096096663017	examples/CMakeFiles/black_scholes.dir/black_scholes.cpp.obj	ece28582c7358606
+9273	10847	8112096188275164	examples/black_scholes.exe	910d1ba074096000
+9	2383	8112097463709834	examples/CMakeFiles/black_scholes.dir/black_scholes.cpp.obj	ece28582c7358606
+2385	3034	8112097487614699	examples/black_scholes.exe	910d1ba074096000
+21	4900	8112099966375691	examples/CMakeFiles/black_scholes.dir/black_scholes.cpp.obj	ece28582c7358606
+4903	5732	8112100015175395	examples/black_scholes.exe	910d1ba074096000
+66	4088	8112105650663720	examples/CMakeFiles/black_scholes.dir/black_scholes.cpp.obj	ece28582c7358606
+4092	4989	8112105690934626	examples/black_scholes.exe	910d1ba074096000
+10	2907	8112106293051663	examples/CMakeFiles/black_scholes.dir/black_scholes.cpp.obj	ece28582c7358606
+2908	3368	8112106322027562	examples/black_scholes.exe	910d1ba074096000
+29	2192	8112106610239574	examples/CMakeFiles/black_scholes.dir/black_scholes.cpp.obj	ece28582c7358606
+2194	2743	8112106631825125	examples/black_scholes.exe	910d1ba074096000
+9	2292	8112106921472413	examples/CMakeFiles/black_scholes.dir/black_scholes.cpp.obj	ece28582c7358606
+2294	2807	8112106944321568	examples/black_scholes.exe	910d1ba074096000
+34	2285	8112107071862267	examples/CMakeFiles/black_scholes.dir/black_scholes.cpp.obj	ece28582c7358606
+2287	2706	8112107094409060	examples/black_scholes.exe	910d1ba074096000
+13	2243	8112107275595718	examples/CMakeFiles/black_scholes.dir/black_scholes.cpp.obj	ece28582c7358606
+2244	2740	8112107297914978	examples/black_scholes.exe	910d1ba074096000
+17	3394	8112107620615457	examples/CMakeFiles/black_scholes.dir/black_scholes.cpp.obj	ece28582c7358606
+3396	4128	8112107654439536	examples/black_scholes.exe	910d1ba074096000
+34	3293	8112107920355897	examples/CMakeFiles/black_scholes.dir/black_scholes.cpp.obj	ece28582c7358606
+3295	4106	8112107953112010	examples/black_scholes.exe	910d1ba074096000
+25	3325	8112114129493239	examples/CMakeFiles/black_scholes.dir/black_scholes.cpp.obj	ece28582c7358606
+3327	4132	8112114162507133	examples/black_scholes.exe	910d1ba074096000

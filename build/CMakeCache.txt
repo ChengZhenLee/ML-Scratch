@@ -22,7 +22,7 @@ CMAKE_AR:FILEPATH=C:/Users/zhens/Downloads/w64devkit/bin/ar.exe
 
 //Choose the type of build, options are: None Debug Release RelWithDebInfo
 // MinSizeRel ...
-CMAKE_BUILD_TYPE:STRING=
+CMAKE_BUILD_TYPE:STRING=Release
 
 //CXX compiler
 CMAKE_CXX_COMPILER:FILEPATH=C:/Users/zhens/Downloads/w64devkit/bin/c++.exe
