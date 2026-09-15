@@ -1,32 +1,37 @@
 # ninja log v7
 7	1549	8108366150795955	tests/CMakeFiles/test_simple_ad.dir/test_simple_ad.cpp.obj	437a2ef64dffed22
 39	613	8108366347408325	tests/test_simple_ad.exe	8137ca90068a8254
-4	332	8110995706651277	build.ninja	36dc197443e41ca3
-4	332	8110995706328559	C:/Users/zhens/OneDrive/Desktop/ML Scratch/build/cmake_install.cmake	36dc197443e41ca3
-4	332	8110995706501647	C:/Users/zhens/OneDrive/Desktop/ML Scratch/build/tests/cmake_install.cmake	36dc197443e41ca3
-4	332	8110995706328559	C:/Users/zhens/OneDrive/Desktop/ML Scratch/build/CTestTestfile.cmake	36dc197443e41ca3
-4	332	8110995706521347	C:/Users/zhens/OneDrive/Desktop/ML Scratch/build/tests/CTestTestfile.cmake	36dc197443e41ca3
-55	3077	8110959781235238	tests/CMakeFiles/test_black_scholes.dir/test_black_scholes.cpp.obj	242c600f7448069c
-3078	3739	8110959811533878	tests/test_black_scholes.exe	7d9fd76472d151e5
+21	1105	8111775783488392	build.ninja	36dc197443e41ca3
+21	1105	8111775782772876	C:/Users/zhens/OneDrive/Desktop/ML Scratch/build/cmake_install.cmake	36dc197443e41ca3
+21	1105	8111775783052049	C:/Users/zhens/OneDrive/Desktop/ML Scratch/build/tests/cmake_install.cmake	36dc197443e41ca3
+21	1105	8111775782811933	C:/Users/zhens/OneDrive/Desktop/ML Scratch/build/CTestTestfile.cmake	36dc197443e41ca3
+21	1105	8111775783109335	C:/Users/zhens/OneDrive/Desktop/ML Scratch/build/tests/CTestTestfile.cmake	36dc197443e41ca3
+116	2702	8110995708789687	tests/CMakeFiles/test_black_scholes.dir/test_black_scholes.cpp.obj	242c600f7448069c
+2704	3550	8110995734721789	tests/test_black_scholes.exe	7d9fd76472d151e5
 35	3189	8110952377365249	tests/CMakeFiles/test_adjoint.dir/test_adjoint.cpp.obj	a8c049c935daf4d6
 3189	5268	8110952408936896	tests/test_adjoint.exe	8748f36abee8f993
 97	3039	8110959781722864	tests/CMakeFiles/test_tangent.dir/test_tangent.cpp.obj	75303506739b1360
 3040	3730	8110959811156098	tests/test_tangent.exe	accd6b096aeeb303
 104	3060	8110959781741331	tests/CMakeFiles/test_nested.dir/test_nested.cpp.obj	271b20ca839f5eef
 3060	3715	8110959811354186	tests/test_nested.exe	d36690464702006a
-21	1105	8110995706651277	build.ninja	36dc197443e41ca3
-21	1105	8110995706651277	C:/Users/zhens/OneDrive/Desktop/ML Scratch/build/cmake_install.cmake	36dc197443e41ca3
-21	1105	8110995706651277	C:/Users/zhens/OneDrive/Desktop/ML Scratch/build/tests/cmake_install.cmake	36dc197443e41ca3
-21	1105	8110995706651277	C:/Users/zhens/OneDrive/Desktop/ML Scratch/build/CTestTestfile.cmake	36dc197443e41ca3
-21	1105	8110995706651277	C:/Users/zhens/OneDrive/Desktop/ML Scratch/build/tests/CTestTestfile.cmake	36dc197443e41ca3
-116	2702	8110995708789687	tests/CMakeFiles/test_black_scholes.dir/test_black_scholes.cpp.obj	242c600f7448069c
-2704	3550	8110995734721789	tests/test_black_scholes.exe	7d9fd76472d151e5
-123	10388	8110995708789687	examples/CMakeFiles/markowitz.dir/markowitz.cpp.obj	e60174145c3480c9
-11	7456	8111000926350508	examples/CMakeFiles/markowitz.dir/markowitz.cpp.obj	e60174145c3480c9
-7459	8555	8111001000739947	examples/markowitz.exe	45afe5068d758a23
-11	6623	8111002009988286	examples/CMakeFiles/markowitz.dir/markowitz.cpp.obj	e60174145c3480c9
-6625	7380	8111002076153764	examples/markowitz.exe	45afe5068d758a23
-52	13871	8111007219765738	examples/CMakeFiles/markowitz.dir/markowitz.cpp.obj	e60174145c3480c9
-13875	15656	8111007358052716	examples/markowitz.exe	45afe5068d758a23
 51	6083	8111014585235236	examples/CMakeFiles/markowitz.dir/markowitz.cpp.obj	e60174145c3480c9
 6085	6944	8111014645681064	examples/markowitz.exe	45afe5068d758a23
+179	1170	8111775783488392	build.ninja	36dc197443e41ca3
+179	1170	8111775783488392	C:/Users/zhens/OneDrive/Desktop/ML Scratch/build/cmake_install.cmake	36dc197443e41ca3
+179	1170	8111775783488392	C:/Users/zhens/OneDrive/Desktop/ML Scratch/build/tests/cmake_install.cmake	36dc197443e41ca3
+179	1170	8111775783488392	C:/Users/zhens/OneDrive/Desktop/ML Scratch/build/examples/cmake_install.cmake	36dc197443e41ca3
+179	1170	8111775783488392	C:/Users/zhens/OneDrive/Desktop/ML Scratch/build/CTestTestfile.cmake	36dc197443e41ca3
+179	1170	8111775783488392	C:/Users/zhens/OneDrive/Desktop/ML Scratch/build/tests/CTestTestfile.cmake	36dc197443e41ca3
+179	1170	8111775783488392	C:/Users/zhens/OneDrive/Desktop/ML Scratch/build/examples/CTestTestfile.cmake	36dc197443e41ca3
+4	4370	8111784746953544	examples/CMakeFiles/markowitz_ad.dir/markowitz_ad.cpp.obj	c501a8704f47ecb6
+4376	5916	8111784790716211	examples/markowitz_ad.exe	8adf20fe55a2069e
+23	4616	8111790140240952	examples/CMakeFiles/markowitz_ad.dir/markowitz_ad.cpp.obj	c501a8704f47ecb6
+4618	5522	8111790186241344	examples/markowitz_ad.exe	8adf20fe55a2069e
+20	3013	8111792341025876	examples/CMakeFiles/markowitz_ad.dir/markowitz_ad.cpp.obj	c501a8704f47ecb6
+3015	3554	8111792370970989	examples/markowitz_ad.exe	8adf20fe55a2069e
+12	3109	8111793469875678	examples/CMakeFiles/markowitz_ad.dir/markowitz_ad.cpp.obj	c501a8704f47ecb6
+3111	3653	8111793500871247	examples/markowitz_ad.exe	8adf20fe55a2069e
+15	3040	8111794965260455	examples/CMakeFiles/markowitz_ad.dir/markowitz_ad.cpp.obj	c501a8704f47ecb6
+3041	3593	8111794995453012	examples/markowitz_ad.exe	8adf20fe55a2069e
+16	3562	8111795816438956	examples/CMakeFiles/markowitz_ad.dir/markowitz_ad.cpp.obj	c501a8704f47ecb6
+3565	4233	8111795851961016	examples/markowitz_ad.exe	8adf20fe55a2069e

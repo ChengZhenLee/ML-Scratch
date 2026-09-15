@@ -4,3 +4,4 @@ function(add_example name)
 endfunction()
 
 add_example(markowitz)
+add_example(markowitz_ad)

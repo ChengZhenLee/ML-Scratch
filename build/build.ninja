@@ -292,6 +292,41 @@ build examples/markowitz.exe: CXX_EXECUTABLE_LINKER__markowitz_ examples/CMakeFi
   TARGET_PDB = markowitz.exe.dbg
   TARGET_SUPPORT_DIR = examples\CMakeFiles\markowitz.dir
 
+# =============================================================================
+# Object build statements for EXECUTABLE target markowitz_ad
+
+
+#############################################
+# Order-only phony target for markowitz_ad
+
+build cmake_object_order_depends_target_markowitz_ad: phony || .
+
+build examples/CMakeFiles/markowitz_ad.dir/markowitz_ad.cpp.obj: CXX_COMPILER__markowitz_ad_unscanned_ C$:/Users/zhens/OneDrive/Desktop/ML$ Scratch/examples/markowitz_ad.cpp || cmake_object_order_depends_target_markowitz_ad
+  DEP_FILE = examples\CMakeFiles\markowitz_ad.dir\markowitz_ad.cpp.obj.d
+  FLAGS = -std=gnu++20
+  INCLUDES = -I"C:/Users/zhens/OneDrive/Desktop/ML Scratch/include"
+  OBJECT_DIR = examples\CMakeFiles\markowitz_ad.dir
+  OBJECT_FILE_DIR = examples\CMakeFiles\markowitz_ad.dir
+  TARGET_SUPPORT_DIR = examples\CMakeFiles\markowitz_ad.dir
+
+
+# =============================================================================
+# Link build statements for EXECUTABLE target markowitz_ad
+
+
+#############################################
+# Link the executable examples\markowitz_ad.exe
+
+build examples/markowitz_ad.exe: CXX_EXECUTABLE_LINKER__markowitz_ad_ examples/CMakeFiles/markowitz_ad.dir/markowitz_ad.cpp.obj
+  LINK_LIBRARIES = -lkernel32 -luser32 -lgdi32 -lwinspool -lshell32 -lole32 -loleaut32 -luuid -lcomdlg32 -ladvapi32
+  OBJECT_DIR = examples\CMakeFiles\markowitz_ad.dir
+  POST_BUILD = cd .
+  PRE_LINK = cd .
+  TARGET_FILE = examples\markowitz_ad.exe
+  TARGET_IMPLIB = examples\libmarkowitz_ad.dll.a
+  TARGET_PDB = markowitz_ad.exe.dbg
+  TARGET_SUPPORT_DIR = examples\CMakeFiles\markowitz_ad.dir
+
 
 #############################################
 # Utility command for test
@@ -335,6 +370,10 @@ build markowitz: phony examples/markowitz.exe
 
 build markowitz.exe: phony examples/markowitz.exe
 
+build markowitz_ad: phony examples/markowitz_ad.exe
+
+build markowitz_ad.exe: phony examples/markowitz_ad.exe
+
 build test_adjoint: phony tests/test_adjoint.exe
 
 build test_adjoint.exe: phony tests/test_adjoint.exe
@@ -366,7 +405,7 @@ build all: phony tests/all examples/all
 #############################################
 # Folder: C:/Users/zhens/OneDrive/Desktop/ML Scratch/build/examples
 
-build examples/all: phony examples/markowitz.exe
+build examples/all: phony examples/markowitz.exe examples/markowitz_ad.exe
 
 # =============================================================================
 
