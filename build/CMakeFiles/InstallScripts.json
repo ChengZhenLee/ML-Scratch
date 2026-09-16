@@ -1,9 +1,0 @@
-{
-	"InstallScripts" : 
-	[
-		"C:/Users/zhens/OneDrive/Desktop/ML Scratch/build/cmake_install.cmake",
-		"C:/Users/zhens/OneDrive/Desktop/ML Scratch/build/tests/cmake_install.cmake",
-		"C:/Users/zhens/OneDrive/Desktop/ML Scratch/build/examples/cmake_install.cmake"
-	],
-	"Parallel" : false
-}

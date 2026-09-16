@@ -3,7 +3,6 @@
 #include <cassert>
 #include <random>
 
-#include "adjoint.hpp"
 #include "black_scholes.hpp"
 
 
@@ -11,6 +10,7 @@ int maxIter = 8000;
 int simIter = 500;
 double stepSize = 0.0005;
 double c = 1e-4;
+double h = 1e-4;
 std::mt19937_64 engine;
 std::normal_distribution<double> dist(0, 1);
 double lambdaPenalty = 500.0;
@@ -43,7 +43,7 @@ T portfolio_value(const std::vector<T>& w, double S, const OptionsBook& book) {
 // Draw numPaths simulated end-of-horizon stock prices from the current RNG
 // state. Called once per batch (training, out-of-sample, ...) so every
 // objective/gradient evaluation against that batch sees the exact same
-// paths, instead of resampling (and re-taping) fresh noise every call.
+// paths, instead of resampling fresh noise every call.
 std::vector<double> generate_paths(const MarketParams& market, int numPaths) {
     std::vector<double> paths(numPaths);
     for (int i = 0; i < numPaths; i++) {
@@ -98,23 +98,23 @@ T penalized_objective(
         + lambdaPenalty * budgetViolation * budgetViolation;
 }
 
-// Gradient of penalized_objective w.r.t. w, via one reverse-mode AD pass.
+// Gradient of penalized_objective w.r.t. w, via central finite differences.
 std::vector<double> compute_gradient(
-    const std::vector<double>& w, const std::vector<double>& paths, const OptionsBook& book,
+    std::vector<double>& w, const std::vector<double>& paths, const OptionsBook& book,
     double valueTarget
 ) {
-    g_tape<double>.reset();
+    std::vector<double> grad;
 
-    std::vector<Adjoint<double>> w_a;
-    for (double wi : w) w_a.push_back(Adjoint<double>(wi));
+    for (size_t i = 0; i < w.size(); i++) {
+        double orig = w[i];
+        w[i] = orig - h;
+        double fMinus = penalized_objective(w, paths, book, valueTarget);
+        w[i] = orig + h;
+        double fPlus = penalized_objective(w, paths, book, valueTarget);
+        w[i] = orig;
+        grad.push_back((fPlus - fMinus) / (2 * h));
+    }
 
-    Adjoint<double> obj = penalized_objective(w_a, paths, book, valueTarget);
-    g_tape<double>.init_adjoints();
-    g_tape<double>.seed_adjoint(obj.idx, 1.0);
-    g_tape<double>.propagate();
-
-    std::vector<double> grad(w.size());
-    for (size_t j = 0; j < w.size(); j++) grad[j] = g_tape<double>.get_adjoint(w_a[j].idx);
     return grad;
 }
 
