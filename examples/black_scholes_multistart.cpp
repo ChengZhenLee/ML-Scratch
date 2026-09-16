@@ -159,84 +159,109 @@ int main(void) {
         {1,     1,     0,     0},       // isCall
     };
 
-    std::vector<double> w = {0.25, 0.25, 0.25, 0.25};
+    // Use several different starting points
+    std::vector<std::vector<double>> startingPoints = {
+        {0.25, 0.25, 0.25, 0.25},   // equal-weighted (what you've used so far)
+        {0.70, 0.10, 0.10, 0.10},   // concentrated in position 1
+        {0.10, 0.10, 0.10, 0.70},   // concentrated in position 4
+    };
 
-    // Freeze one batch of simulated price paths for the whole optimization,
-    // turning the Monte Carlo objective into a fixed, deterministic function
-    // of w (a sample average approximation) instead of a fresh noisy draw
-    // every iteration. Without this, each iteration compared against a
-    // differently-noisy batch, which broke the Armijo line search's
-    // sufficient-decrease test and collapsed stepSize to near zero within
-    // the first few iterations.
+    std::vector<std::vector<double>> finalWeights(startingPoints.size());
+
+    std::vector<std::vector<double>> grads;
+    std::vector<double> means, variances;
+
     std::vector<double> trainPaths = generate_paths(market, simIter);
 
-    for (int i = 0; i < maxIter; i++) {
-        std::vector<double> grad = compute_gradient(w, trainPaths, book, valueTarget);
-        double baseObjective = penalized_objective(w, trainPaths, book, valueTarget);
+    for (int i = 0; i < startingPoints.size(); i++) {
+        auto& w = startingPoints[i];
+        auto& fw = finalWeights[i];
+        std::cout << "Started at (" << w[0] << "," << w[1] << "," << w[2] << "," << w[3] << ")\n";
 
-        // If the step size satisfies the Armijo condition after it grows, grow it
-        while (true) {
-            double candidateStepSize = stepSize * 1.5;
-            std::vector<double> wCandidate = vec_sub_scaled(w, candidateStepSize, grad);
+        stepSize = 0.0005;
 
-            double LHS = penalized_objective(wCandidate, trainPaths, book, valueTarget);
-            double RHS = baseObjective - c * candidateStepSize * squared_norm(grad);
+        for (int iter = 0; iter < maxIter; iter++) {
+            std::vector<double> grad = compute_gradient(w, trainPaths, book, valueTarget);
+            double baseObjective = penalized_objective(w, trainPaths, book, valueTarget);
 
-            if (LHS <= RHS) stepSize = candidateStepSize;
-            else break;
+            // If the step size satisfies the Armijo condition after it grows, grow it
+            while (true) {
+                double candidateStepSize = stepSize * 1.5;
+                std::vector<double> wCandidate = vec_sub_scaled(w, candidateStepSize, grad);
+
+                double LHS = penalized_objective(wCandidate, trainPaths, book, valueTarget);
+                double RHS = baseObjective - c * candidateStepSize * squared_norm(grad);
+
+                if (LHS <= RHS) stepSize = candidateStepSize;
+                else break;
+            }
+
+            // Ensure Armijo condition is fulfilled
+            while (true) {
+                std::vector<double> wCandidate = vec_sub_scaled(w, stepSize, grad);
+
+                double LHS = penalized_objective(wCandidate, trainPaths, book, valueTarget);
+                double RHS = baseObjective - c * stepSize * squared_norm(grad);
+
+                if (LHS <= RHS) break;
+                stepSize /= 2.0;
+            }
+
+            w = vec_sub_scaled(w, stepSize, grad);
+            fw = w;
+
+            if (squared_norm(grad) < gradTol) break;
         }
 
-        // Ensure Armijo condition is fulfilled
-        while (true) {
-            std::vector<double> wCandidate = vec_sub_scaled(w, stepSize, grad);
+        std::cout << "  -> converged to (" << fw[0] << "," << fw[1] << "," << fw[2] << "," << fw[3] << ")\n";
 
-            double LHS = penalized_objective(wCandidate, trainPaths, book, valueTarget);
-            double RHS = baseObjective - c * stepSize * squared_norm(grad);
+        double weightSum = sum(fw);
 
-            if (LHS <= RHS) break;
-            stepSize /= 2.0;
-        }
+        auto [finalMean, finalVariance] = portfolio_risk_return<double>(fw, trainPaths, book);
+        std::vector<double> finalGrad = compute_gradient(fw, trainPaths, book, valueTarget);
 
-        w = vec_sub_scaled(w, stepSize, grad);
-
-        if (squared_norm(grad) < gradTol) break;
+        grads.push_back(finalGrad);
+        means.push_back(finalMean);
+        variances.push_back(finalVariance);
     }
 
-    double weightSum = sum(w);
+    double relTol = 0.02;
+    for (size_t k = 0; k < startingPoints.size(); k++) {
+        double gradNorm = std::sqrt(squared_norm(grads[k]));
+        bool wellConverged = gradNorm < gradTol;
 
-    // Evaluate on the same frozen batch the optimizer converged against,
-    // so this reflects the true state of the objective we optimized.
-    auto [finalMean, finalVariance] = portfolio_risk_return<double>(w, trainPaths, book);
-    std::vector<double> finalGrad = compute_gradient(w, trainPaths, book, valueTarget);
+        std::cout << "\nStart " << k << ": (";
+        for (size_t j = 0; j < startingPoints[k].size(); j++)
+            std::cout << startingPoints[k][j] << (j+1 < startingPoints[k].size() ? ", " : "");
+        std::cout << ")\n";
+        std::cout << "  Final weights: (";
+        for (size_t j = 0; j < finalWeights[k].size(); j++)
+            std::cout << finalWeights[k][j] << (j+1 < finalWeights[k].size() ? ", " : "");
+        std::cout << ")\n";
+        std::cout << "  Final variance:      " << variances[k] << "\n";
+        std::cout << "  Final mean:          " << means[k] << "\n";
+        std::cout << "  Final gradient norm: " << gradNorm
+                << (wellConverged ? "  [CONVERGED]" : "  [NOT FULLY CONVERGED -- interpret comparison with caution]") << "\n";
+    }
 
-    double constraintTol = 1e-3;
-    bool constraintsOk = std::fabs(weightSum - 1.0) < constraintTol
-                       && std::fabs(finalMean - valueTarget) < constraintTol;
+    // Consistency check, relative to Start 0, gated by whether both runs actually converged
+    bool allConsistent = true;
+    bool allConverged = true;
+    std::cout << "\n[Consistency check: comparing all runs to Start 0]\n";
 
-    std::cout << "\n[Constraint check]\n";
-    std::cout << "  Sum of weights:      " << weightSum << "   (target: 1.0,  error: " << std::fabs(weightSum - 1.0) << ")\n";
-    std::cout << "  Expected portfolio value (simulated): " << finalMean
-               << "   (target: " << valueTarget << ",  error: " << std::fabs(finalMean - valueTarget) << ")\n";
-    std::cout << "  Constraints approximately satisfied? " << (constraintsOk ? "YES" : "NO") << "\n";
+    for (size_t k = 0; k < variances.size(); k++) {
+        double gk = std::sqrt(squared_norm(grads[k]));
+        if (gk >= gradTol) allConverged = false;
+    }
 
-    std::cout << "\n[Stationarity check]\n";
-    std::cout << "  Final gradient: " << finalGrad << "\n";
-    std::cout << "  Gradient norm:  " << std::sqrt(squared_norm(finalGrad)) << "   (should be small if converged)\n";
+    for (size_t k = 1; k < variances.size(); k++) {
+        double relDiff = std::fabs(variances[k] - variances[0]) / std::fabs(variances[0]);
+        bool consistent = relDiff < relTol;
 
-    std::cout << "\n[Result summary]\n";
-    std::cout << "  Final weights: " << w << "\n";
-    std::cout << "  Portfolio variance (risk): " << finalVariance << "\n";
-    std::cout << "  Portfolio std dev:         " << std::sqrt(finalVariance) << "\n";
-    std::cout << "  Expected value @ horizon:  " << finalMean << "\n";
+        std::cout << "  Start " << k << " vs Start 0: relative variance diff = " << relDiff
+                << "  (abs: " << std::fabs(variances[k]-variances[0]) << ")"
+                << (consistent ? "  [CONSISTENT]" : "  [DIFFERENT]") << "\n";
 
-    // Out-of-sample check: re-evaluate at w on a large, freshly-drawn batch
-    // (engine continues on from wherever trainPaths left it, so this is
-    // guaranteed to be independent of the training batch) to confirm the
-    // fit generalizes rather than having exploited noise specific to it.
-    std::vector<double> oosPaths = generate_paths(market, 50000);
-    auto [oosMean, oosVariance] = portfolio_risk_return<double>(w, oosPaths, book);
-
-    std::cout << "\n[Out-of-sample check, fresh " << oosPaths.size() << "-path batch]\n";
-    std::cout << "  Expected value: " << oosMean << " (target " << valueTarget << ")\n";
-    std::cout << "  Variance:       " << oosVariance << "\n";
+        allConsistent = allConsistent && consistent;
+    }
 }

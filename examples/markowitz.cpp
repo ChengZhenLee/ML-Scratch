@@ -2,6 +2,7 @@
 #include <cmath>
 #include <cassert>
 #include <limits>
+#include <vector>
 
 #include "Eigen/Dense"
 
@@ -14,6 +15,17 @@ struct MarkowitzReturn {
     MarkowitzReturn(Eigen::VectorXd w, double lambda1, double lambda2) :
         w(w), lambda1(lambda1), lambda2(lambda2) {}
 };
+
+std::vector<double> toVec(const Eigen::VectorXd& v) {
+    return std::vector<double>(v.data(), v.data() + v.size());
+}
+
+// Overload the << operator for ostream to print out vectors
+std::ostream& operator<<(std::ostream& os, const std::vector<double>& v) {
+    os << "(";
+    for (size_t j = 0; j < v.size(); j++) os << v[j] << (j + 1 < v.size() ? ", " : "");
+    return os << ")";
+}
 
 MarkowitzReturn solve_markowitz(
     const Eigen::MatrixXd& Sigma, 
@@ -77,12 +89,22 @@ int main(void) {
     double expectedR = w.transpose() * mu;
     Eigen::VectorXd gradient = 2 * Sigma * w - lambda1 * mu - lambda2 * ones;
 
-    std::cout << "Optimal weights:\n" << w << "\n\n";
-    std::cout << "Sum of weights:    " << wSum << "  (should be 1.0)\n";
-    std::cout << "Expected return:   " << expectedR << "  (target was " << rTarget << ")\n";
-    std::cout << "Lagrangian gradient norm: " << gradient.norm() << "  (should be ~0)\n";
-
     double tol = std::sqrt(std::numeric_limits<double>::epsilon());
+    bool constraintsOk = std::fabs(wSum - 1.0) < tol && std::fabs(expectedR - rTarget) < tol;
+
+    std::cout << "\n[Constraint check]\n";
+    std::cout << "  Sum of weights:    " << wSum << "   (target: 1.0,  error: " << std::fabs(wSum - 1.0) << ")\n";
+    std::cout << "  Expected return:   " << expectedR << "   (target: " << rTarget << ",  error: " << std::fabs(expectedR - rTarget) << ")\n";
+    std::cout << "  Constraints approximately satisfied? " << (constraintsOk ? "YES" : "NO") << "\n";
+
+    std::cout << "\n[Stationarity check]\n";
+    std::cout << "  Lagrangian gradient: " << toVec(gradient) << "\n";
+    std::cout << "  Gradient norm:  " << gradient.norm() << "   (should be small if converged)\n";
+
+    std::cout << "\n[Result summary]\n";
+    std::cout << "  Optimal weights: " << toVec(w) << "\n";
+    std::cout << "  Expected return: " << expectedR << "\n";
+
     assert(std::fabs(wSum - 1.0) < tol && "weights should sum to 1");
     assert(std::fabs(expectedR - rTarget) < tol && "should hit target return");
     assert(gradient.norm() < tol && "Lagrangian condition should hold at optimal w");

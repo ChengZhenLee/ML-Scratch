@@ -12,6 +12,9 @@
 /mnt/c/Users/zhens/OneDrive/Desktop/ML Scratch/build/examples/CMakeFiles/rebuild_cache.dir
 /mnt/c/Users/zhens/OneDrive/Desktop/ML Scratch/build/examples/CMakeFiles/edit_cache.dir
 /mnt/c/Users/zhens/OneDrive/Desktop/ML Scratch/build/examples/CMakeFiles/test.dir
+/mnt/c/Users/zhens/OneDrive/Desktop/ML Scratch/build/examples/CMakeFiles/black_scholes_newton_multistart.dir
+/mnt/c/Users/zhens/OneDrive/Desktop/ML Scratch/build/examples/CMakeFiles/black_scholes_newton.dir
+/mnt/c/Users/zhens/OneDrive/Desktop/ML Scratch/build/examples/CMakeFiles/black_scholes_multistart.dir
 /mnt/c/Users/zhens/OneDrive/Desktop/ML Scratch/build/examples/CMakeFiles/black_scholes_cfd.dir
 /mnt/c/Users/zhens/OneDrive/Desktop/ML Scratch/build/examples/CMakeFiles/black_scholes.dir
 /mnt/c/Users/zhens/OneDrive/Desktop/ML Scratch/build/examples/CMakeFiles/markowitz_ad.dir

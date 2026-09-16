@@ -1,20 +1,17 @@
-#include <iostream>
-#include <cmath>
-#include <cassert>
+#include <vector>
 #include <random>
+#include <iostream>
 
+#include "adjoint.hpp"
+#include "tangent.hpp"
 #include "black_scholes.hpp"
+#include "Eigen/Dense"
 
 
-int maxIter = 8000;
-int simIter = 500;
-double stepSize = 0.0005;
-double c = 1e-4;
-double h = 1e-4;
-double gradTol = 1e-4;
+const int simIter = 500;
+const double lambdaPenalty = 50.0;
 std::mt19937_64 engine;
 std::normal_distribution<double> dist(0, 1);
-double lambdaPenalty = 50.0;
 
 // Per-underlying market parameters shared by every option in the book.
 struct MarketParams {
@@ -32,19 +29,15 @@ T portfolio_value(const std::vector<T>& w, double S, const OptionsBook& book) {
     T value = T(0.0);
     for (size_t i = 0; i < w.size(); i++) {
         if (book.isCall[i]) {
-            value = value + w[i] * black_scholes_call(S, book.K[i], book.r[i], book.sigma[i], book.tau[i]);
+            value = value + w[i] * T(black_scholes_call(S, book.K[i], book.r[i], book.sigma[i], book.tau[i]));
         } else {
-            value = value + w[i] * black_scholes_put(S, book.K[i], book.r[i], book.sigma[i], book.tau[i]);
+            value = value + w[i] * T(black_scholes_put(S, book.K[i], book.r[i], book.sigma[i], book.tau[i]));
         }
     }
 
     return value;
 }
 
-// Draw numPaths simulated end-of-horizon stock prices from the current RNG
-// state. Called once per batch (training, out-of-sample, ...) so every
-// objective/gradient evaluation against that batch sees the exact same
-// paths, instead of resampling fresh noise every call.
 std::vector<double> generate_paths(const MarketParams& market, int numPaths) {
     std::vector<double> paths(numPaths);
     for (int i = 0; i < numPaths; i++) {
@@ -95,41 +88,74 @@ T penalized_objective(
     T budgetViolation = weightSum - T(1.0);
 
     return result.variance
-        + lambdaPenalty * returnViolation * returnViolation
-        + lambdaPenalty * budgetViolation * budgetViolation;
+        + T(lambdaPenalty) * returnViolation * returnViolation
+        + T(lambdaPenalty) * budgetViolation * budgetViolation;
 }
 
-// Gradient of penalized_objective w.r.t. w, via central finite differences.
-std::vector<double> compute_gradient(
-    std::vector<double>& w, const std::vector<double>& paths, const OptionsBook& book,
+Eigen::MatrixXd compute_hessian(
+    const std::vector<double>& w,
+    const std::vector<double>& paths,
+    const OptionsBook& book,
     double valueTarget
 ) {
-    std::vector<double> grad;
+    int n = w.size();
+    Eigen::MatrixXd H(n, n);
 
-    for (size_t i = 0; i < w.size(); i++) {
-        double orig = w[i];
-        w[i] = orig - h;
-        double fMinus = penalized_objective(w, paths, book, valueTarget);
-        w[i] = orig + h;
-        double fPlus = penalized_objective(w, paths, book, valueTarget);
-        w[i] = orig;
-        grad.push_back((fPlus - fMinus) / (2 * h));
+    for (int col = 0; col < n; col++) {
+        g_tape<Tangent<double>>.reset();
+
+        std::vector<Adjoint<Tangent<double>>> w_a;
+        for (int i = 0; i < n; i++) {
+            Tangent<double> w_t(w[i]);
+            w_t.seed_tangent(i == col ? 1.0 : 0.0);
+            w_a.push_back(Adjoint<Tangent<double>>(w_t));    
+        }
+
+        Adjoint<Tangent<double>> obj = penalized_objective(w_a, paths, book, valueTarget);
+
+        g_tape<Tangent<double>>.init_adjoints();
+        g_tape<Tangent<double>>.seed_adjoint(obj.idx, Tangent<double>(1.0, 0.0));
+        g_tape<Tangent<double>>.propagate();
+
+        // Exploit symmetry
+        for (int row = col; row < n; row++) {
+            Tangent<double> adj = g_tape<Tangent<double>>.get_adjoint(w_a[row].idx);
+            H(row, col) = adj.tangent;
+            if (col != row) H(col, row) = adj.tangent;
+        }
     }
 
+    return H;
+}
+
+
+Eigen::VectorXd compute_gradient(
+    const std::vector<double>& w,
+    const std::vector<double>& paths,
+    const OptionsBook& book,
+    double valueTarget
+) {
+    g_tape<double>.reset();
+
+    std::vector<Adjoint<double>> w_a;
+    for (double wi : w) w_a.push_back(Adjoint<double>(wi));
+
+    Adjoint<double> obj = penalized_objective(w_a, paths, book, valueTarget);
+    g_tape<double>.init_adjoints();
+    g_tape<double>.seed_adjoint(obj.idx, 1.0);
+    g_tape<double>.propagate();
+
+    Eigen::VectorXd grad(w.size());
+    for (size_t j = 0; j < w.size(); j++) grad(j) = g_tape<double>.get_adjoint(w_a[j].idx);
     return grad;
 }
 
-std::vector<double> vec_sub_scaled(const std::vector<double>& w, double step, const std::vector<double>& grad) {
-    std::vector<double> result(w.size());
-    for (size_t i = 0; i < w.size(); ++i)
-        result[i] = w[i] - step * grad[i];
-    return result;
+std::vector<double> toVec(const Eigen::VectorXd& v) {
+    return std::vector<double>(v.data(), v.data() + v.size());
 }
 
-double squared_norm(const std::vector<double>& v) {
-    double s = 0.0;
-    for (double x : v) s += x * x;
-    return s;
+double squared_norm(const Eigen::VectorXd& v) {
+    return v.squaredNorm();
 }
 
 double sum(const std::vector<double>& v) {
@@ -161,53 +187,33 @@ int main(void) {
 
     std::vector<double> w = {0.25, 0.25, 0.25, 0.25};
 
-    // Freeze one batch of simulated price paths for the whole optimization,
-    // turning the Monte Carlo objective into a fixed, deterministic function
-    // of w (a sample average approximation) instead of a fresh noisy draw
-    // every iteration. Without this, each iteration compared against a
-    // differently-noisy batch, which broke the Armijo line search's
-    // sufficient-decrease test and collapsed stepSize to near zero within
-    // the first few iterations.
     std::vector<double> trainPaths = generate_paths(market, simIter);
 
-    for (int i = 0; i < maxIter; i++) {
-        std::vector<double> grad = compute_gradient(w, trainPaths, book, valueTarget);
-        double baseObjective = penalized_objective(w, trainPaths, book, valueTarget);
+    Eigen::MatrixXd H = compute_hessian(w, trainPaths, book, valueTarget);
+    Eigen::VectorXd grad = compute_gradient(w, trainPaths, book, valueTarget);
 
-        // If the step size satisfies the Armijo condition after it grows, grow it
-        while (true) {
-            double candidateStepSize = stepSize * 1.5;
-            std::vector<double> wCandidate = vec_sub_scaled(w, candidateStepSize, grad);
-
-            double LHS = penalized_objective(wCandidate, trainPaths, book, valueTarget);
-            double RHS = baseObjective - c * candidateStepSize * squared_norm(grad);
-
-            if (LHS <= RHS) stepSize = candidateStepSize;
-            else break;
-        }
-
-        // Ensure Armijo condition is fulfilled
-        while (true) {
-            std::vector<double> wCandidate = vec_sub_scaled(w, stepSize, grad);
-
-            double LHS = penalized_objective(wCandidate, trainPaths, book, valueTarget);
-            double RHS = baseObjective - c * stepSize * squared_norm(grad);
-
-            if (LHS <= RHS) break;
-            stepSize /= 2.0;
-        }
-
-        w = vec_sub_scaled(w, stepSize, grad);
-
-        if (squared_norm(grad) < gradTol) break;
+    Eigen::VectorXd w_v(w.size());
+    for (size_t i = 0; i < w.size(); i++) {
+        w_v(i) = w[i];
     }
 
-    double weightSum = sum(w);
+    // LDLT decomposition to compute H^-1 * grad
+    Eigen::VectorXd delta = H.ldlt().solve(grad);
 
-    // Evaluate on the same frozen batch the optimizer converged against,
+    // Single Newton Step
+    Eigen::VectorXd w_star = w_v - delta;
+
+    std::vector<double> w_final;
+    for (int j = 0; j < w_star.size(); j++) {
+        w_final.push_back(w_star(j));
+    }
+
+    double weightSum = sum(w_final);
+
+    // Evaluate on the same frozen batch the Newton step converged against,
     // so this reflects the true state of the objective we optimized.
-    auto [finalMean, finalVariance] = portfolio_risk_return<double>(w, trainPaths, book);
-    std::vector<double> finalGrad = compute_gradient(w, trainPaths, book, valueTarget);
+    auto [finalMean, finalVariance] = portfolio_risk_return<double>(w_final, trainPaths, book);
+    Eigen::VectorXd finalGrad = compute_gradient(w_final, trainPaths, book, valueTarget);
 
     double constraintTol = 1e-3;
     bool constraintsOk = std::fabs(weightSum - 1.0) < constraintTol
@@ -220,21 +226,21 @@ int main(void) {
     std::cout << "  Constraints approximately satisfied? " << (constraintsOk ? "YES" : "NO") << "\n";
 
     std::cout << "\n[Stationarity check]\n";
-    std::cout << "  Final gradient: " << finalGrad << "\n";
+    std::cout << "  Final gradient: " << toVec(finalGrad) << "\n";
     std::cout << "  Gradient norm:  " << std::sqrt(squared_norm(finalGrad)) << "   (should be small if converged)\n";
 
     std::cout << "\n[Result summary]\n";
-    std::cout << "  Final weights: " << w << "\n";
+    std::cout << "  Final weights: " << w_final << "\n";
     std::cout << "  Portfolio variance (risk): " << finalVariance << "\n";
     std::cout << "  Portfolio std dev:         " << std::sqrt(finalVariance) << "\n";
     std::cout << "  Expected value @ horizon:  " << finalMean << "\n";
 
-    // Out-of-sample check: re-evaluate at w on a large, freshly-drawn batch
-    // (engine continues on from wherever trainPaths left it, so this is
-    // guaranteed to be independent of the training batch) to confirm the
+    // Out-of-sample check: re-evaluate at w_final on a large, freshly-drawn
+    // batch (engine continues on from wherever trainPaths left it, so this
+    // is guaranteed to be independent of the training batch) to confirm the
     // fit generalizes rather than having exploited noise specific to it.
     std::vector<double> oosPaths = generate_paths(market, 50000);
-    auto [oosMean, oosVariance] = portfolio_risk_return<double>(w, oosPaths, book);
+    auto [oosMean, oosVariance] = portfolio_risk_return<double>(w_final, oosPaths, book);
 
     std::cout << "\n[Out-of-sample check, fresh " << oosPaths.size() << "-path batch]\n";
     std::cout << "  Expected value: " << oosMean << " (target " << valueTarget << ")\n";

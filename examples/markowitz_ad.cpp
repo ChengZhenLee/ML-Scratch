@@ -1,6 +1,7 @@
 #include <iostream>
 #include <cmath>
 #include <cassert>
+#include <vector>
 
 #include "adjoint.hpp"
 #include "Eigen/Dense"
@@ -13,6 +14,13 @@ double c = 1e-4;
 
 std::vector<double> toVec(const Eigen::VectorXd& v) {
     return std::vector<double>(v.data(), v.data() + v.size());
+}
+
+// Overload the << operator for ostream to print out vectors
+std::ostream& operator<<(std::ostream& os, const std::vector<double>& v) {
+    os << "(";
+    for (size_t j = 0; j < v.size(); j++) os << v[j] << (j + 1 < v.size() ? ", " : "");
+    return os << ")";
 }
 
 template <typename T>
@@ -131,12 +139,23 @@ int main(void) {
 
     double wSum = w.sum();
     double expectedR = w.transpose() * mu;
-    std::cout << "Optimal weights:\n" << w << "\n\n";
-    std::cout << "Sum of weights:    " << wSum << "  (should be 1.0)\n";
-    std::cout << "Expected return:   " << expectedR << "  (target was " << rTarget << ")\n";
-    std::cout << "Lagrangian gradient norm: " << grad.norm() << "  (should be ~0)\n";
 
     double tol = 1e-3;
+    bool constraintsOk = std::fabs(wSum - 1.0) < tol && std::fabs(expectedR - rTarget) < tol;
+
+    std::cout << "\n[Constraint check]\n";
+    std::cout << "  Sum of weights:    " << wSum << "   (target: 1.0,  error: " << std::fabs(wSum - 1.0) << ")\n";
+    std::cout << "  Expected return:   " << expectedR << "   (target: " << rTarget << ",  error: " << std::fabs(expectedR - rTarget) << ")\n";
+    std::cout << "  Constraints approximately satisfied? " << (constraintsOk ? "YES" : "NO") << "\n";
+
+    std::cout << "\n[Stationarity check]\n";
+    std::cout << "  Lagrangian gradient: " << toVec(grad) << "\n";
+    std::cout << "  Gradient norm:  " << grad.norm() << "   (should be small if converged)\n";
+
+    std::cout << "\n[Result summary]\n";
+    std::cout << "  Optimal weights: " << toVec(w) << "\n";
+    std::cout << "  Expected return: " << expectedR << "\n";
+
     assert(std::fabs(wSum - 1.0) < tol && "weights should sum to 1");
     assert(std::fabs(expectedR - rTarget) < tol && "should hit target return");
     assert(grad.norm() < tol && "Lagrangian condition should hold at optimal w");
