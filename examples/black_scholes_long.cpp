@@ -15,7 +15,8 @@ Eigen::MatrixXd compute_hessian(
     const std::vector<double>& w,
     const std::vector<double>& paths,
     const OptionsBook& book,
-    double valueTarget
+    double valueTarget,
+    bool longOnly=false
 ) {
     int n = w.size();
     Eigen::MatrixXd H(n, n);
@@ -30,7 +31,9 @@ Eigen::MatrixXd compute_hessian(
             w_a.push_back(Adjoint<Tangent<double>>(w_t));    
         }
 
-        Adjoint<Tangent<double>> obj = penalized_objective(w_a, paths, book, valueTarget, lambdaPenalty);
+        Adjoint<Tangent<double>> obj = longOnly ? 
+            penalized_objective_long(w_a, paths, book, valueTarget, lambdaPenalty) :
+            penalized_objective(w_a, paths, book, valueTarget, lambdaPenalty);
 
         g_tape<Tangent<double>>.init_adjoints();
         g_tape<Tangent<double>>.seed_adjoint(obj.idx, Tangent<double>(1.0, 0.0));
@@ -52,14 +55,17 @@ Eigen::VectorXd compute_gradient(
     const std::vector<double>& w,
     const std::vector<double>& paths,
     const OptionsBook& book,
-    double valueTarget
+    double valueTarget,
+    bool longOnly=false
 ) {
     g_tape<double>.reset();
 
     std::vector<Adjoint<double>> w_a;
     for (double wi : w) w_a.push_back(Adjoint<double>(wi));
 
-    Adjoint<double> obj = penalized_objective(w_a, paths, book, valueTarget, lambdaPenalty);
+    Adjoint<double> obj = longOnly ? 
+        penalized_objective_long(w_a, paths, book, valueTarget, lambdaPenalty) :
+        penalized_objective(w_a, paths, book, valueTarget, lambdaPenalty);
     g_tape<double>.init_adjoints();
     g_tape<double>.seed_adjoint(obj.idx, 1.0);
     g_tape<double>.propagate();
@@ -83,24 +89,64 @@ int main(void) {
 
     std::vector<double> trainPaths = generate_paths(market, simIter);
 
-    Eigen::MatrixXd H = compute_hessian(w, trainPaths, book, valueTarget);
-    Eigen::VectorXd grad = compute_gradient(w, trainPaths, book, valueTarget);
+    Eigen::MatrixXd H = compute_hessian(w, trainPaths, book, valueTarget, true);
+    Eigen::VectorXd grad = compute_gradient(w, trainPaths, book, valueTarget, true);
 
-    Eigen::VectorXd w_v(w.size());
-    for (size_t i = 0; i < w.size(); i++) {
-        w_v(i) = w[i];
+    Eigen::VectorXd w_v = Eigen::Map<const Eigen::VectorXd>(w.data(), w.size());
+
+    for (int i = 0; i < 100; i++) {
+        std::vector<double> wc = toVec(w_v);
+        Eigen::VectorXd g = compute_gradient(wc, trainPaths, book, valueTarget);
+        std::cout << "iter " << i << "  |g|=" << g.norm() << "  min w=" << w_v.minCoeff() << "\n";
+        if (g.norm() < 1e-8) break;
+        Eigen::MatrixXd H = compute_hessian(wc, trainPaths, book, valueTarget);
+        w_v -= H.ldlt().solve(g);
     }
 
-    // LDLT decomposition to compute H^-1 * grad
-    Eigen::VectorXd delta = H.ldlt().solve(grad);
-
-    // Single Newton Step
-    Eigen::VectorXd w_star = w_v - delta;
-
-    std::vector<double> w_final;
-    for (int j = 0; j < w_star.size(); j++) {
-        w_final.push_back(w_star(j));
+    // Pin and resolve to enforce w >=0 constraint
+    int n = w_v.size();
+    std::vector<bool> pinned(n, false);
+    for (size_t i = 0; i < n; i++) {
+        if (w_v(i) < 0) pinned[i] = true;
     }
+
+    for (int pass = 0; pass < 100; pass++) {
+        std::vector<size_t> freeIdx;
+        for (size_t i = 0; i < n; i++) {
+            if (pinned[i]) w_v(i) = 0.0;
+            else freeIdx.push_back(i);
+        }
+
+        std::vector<double> wc = toVec(w_v);
+        Eigen::VectorXd g = compute_gradient(wc, trainPaths, book, valueTarget, false);
+        Eigen::MatrixXd H = compute_hessian(wc, trainPaths, book, valueTarget, false);
+
+        Eigen::MatrixXd H_ff(freeIdx.size(), freeIdx.size());
+        Eigen::VectorXd g_f(freeIdx.size());
+        for (size_t a = 0; a < freeIdx.size(); a++) {
+            g_f(a) = g(freeIdx[a]);
+            for (size_t b = 0; b < freeIdx.size(); b++) H_ff(a, b) = H(freeIdx[a], freeIdx[b]);
+        }
+        Eigen::VectorXd delta = H_ff.ldlt().solve(g_f);
+        for (size_t a = 0; a < freeIdx.size(); a++) w_v(freeIdx[a]) -= delta(a);
+
+        bool changed = false;
+        for (size_t i : freeIdx)
+            if (w_v(i) < 0) { pinned[i] = true; changed = true; }     // free weight went negative: pin it
+
+        if (!changed) {
+            Eigen::VectorXd g2 = compute_gradient(toVec(w_v), trainPaths, book, valueTarget, false);
+            for (size_t i = 0; i < n; i++)
+                if (pinned[i] && g2(i) < 0) { pinned[i] = false; changed = true; }   // wall weight wants to be positive: release it
+        }
+
+        std::cout << "pass " << pass << "  pinned:";
+        for (size_t i = 0; i < n; i++) if (pinned[i]) std::cout << " " << i;
+        std::cout << "\n";
+        if (!changed) break;
+    }
+
+    std::vector<double> w_final = toVec(w_v);
 
     double weightSum = sum(w_final);
 
